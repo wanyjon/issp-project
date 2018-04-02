@@ -57,11 +57,12 @@
 <template>
     <div class="layout">
         <Layout>
-            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
                 <div align="center" style="margin-top: 15px;margin-bottom: 15px">
-                    <img src="@/assets/1028945360.jpg">
+                    <!-- <img src="@/assets/1028945360.jpg"> -->
+                    <Avatar icon="person" size="large" />
                     <h2 style="color: white">wany</h2>
-                    <Button type="primary">info</Button>
+                    <!-- <Button type="primary">info</Button> -->
 
                 </div>
                 <Menu :active-name="cai" theme="dark" width="auto" :class="menuitemClasses" @on-select="menu">
@@ -73,6 +74,11 @@
                             <MenuItem name="1-1">待审核</MenuItem>
                             <MenuItem name="1-2">待分析</MenuItem>
                             <MenuItem name="1-3">待付款</MenuItem>
+                            <MenuItem name="1-4">待确认</MenuItem>
+                            <MenuItem name="1-5">待还款</MenuItem>
+                            <MenuItem name="1-6">还核对</MenuItem>
+                            <MenuItem name="1-7">已完成</MenuItem>
+                            <MenuItem name="1-8">有误记录</MenuItem>
                         </Submenu>
                         <Submenu name="2">
                             <template slot="title">
@@ -81,18 +87,14 @@
                             </template>
                             <MenuItem name="2-1">待审核</MenuItem>
                             <MenuItem name="2-2">待分析</MenuItem>
+                            <MenuItem name="2-3">待核对</MenuItem>
+                            <MenuItem name="2-4">待付款</MenuItem>
+                            <MenuItem name="2-5">已完成</MenuItem>
+                            <MenuItem name="2-6">有误记录</MenuItem>
                         </Submenu>
-                        <!-- <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                Item 3
-                            </template>
-                            <MenuItem name="3-1">Option 1</MenuItem>
-                            <MenuItem name="3-2">Option 2</MenuItem>
-                        </Submenu> -->
                 </Menu>
             </Sider>
-            <Layout>
+            <Layout :style="{marginLeft: '200px'}">
                 <Header :style="{padding: 0}" class="layout-header-bar">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '20px 20px 0'}" type="navicon-round" size="24"></Icon>
                 </Header>
@@ -112,114 +114,131 @@
                             </div>
                             
                         </TabPane>
-                        <TabPane label="添加" icon="plus" v-if="show">
+                        <TabPane label="添加" icon="plus" v-if="see">
                             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="0" label-position="top">
                             <Row :gutter="16">
-                                <Col span="4">
+                                <Col span="4" offset="1">
                                     <div>
                                         
-                                            <FormItem label="借款人" prop="name">
-                                                <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
+                                            <FormItem label="借款人" prop="borrower">
+                                                <Input v-model="formValidate.borrower" placeholder="请输入借款人的姓名"></Input>
                                             </FormItem>
-                                            <FormItem label="负责人" prop="mail">
-                                                <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+                                            <FormItem label="负责人" prop="charge">
+                                                <Input v-model="formValidate.charge" placeholder="请输入负责人的姓名"></Input>
                                             </FormItem>
                                             <FormItem label="借款方式" prop="city">
-                                                <Select v-model="formValidate.city" placeholder="Select your city">
+                                                <Select v-model="formValidate.wayOfBorrowing" placeholder="选择你的借款方式">
                                                     <Option value="beijing">现金</Option>
                                                     <Option value="shanghai">公司代购</Option>
                                                     <Option value="shenzhen">转账</Option>
                                                 </Select>
                                             </FormItem>
-                                            <FormItem label="预计借款时间">
+                                            <FormItem label="预计借款时间" prop="date">
                                                 <Row>
                                                     <Col span="24">
-                                                        <FormItem prop="date">
-                                                            <DatePicker type="date" placeholder="Select date" v-model="formValidate.date"></DatePicker>
+                                                        <FormItem>
+                                                            <DatePicker type="date" placeholder="选一个好的时机" v-model="formValidate.date"></DatePicker>
                                                         </FormItem>
                                                     </Col>
-                                                    <!-- <Col span="2" style="text-align: center">-</Col>
-                                                    <Col span="11">
-                                                        <FormItem prop="time">
-                                                            <TimePicker type="time" placeholder="Select time" v-model="formValidate.time"></TimePicker>
-                                                        </FormItem>
-                                                    </Col> -->
                                                 </Row>
                                             </FormItem>
-                                            <FormItem label="Gender" prop="gender">
-                                                <RadioGroup v-model="formValidate.gender">
-                                                    <Radio label="male">Male</Radio>
-                                                    <Radio label="female">Female</Radio>
+                                            <FormItem label="是否有发票" prop="gender">
+                                                <RadioGroup v-model="formValidate.invoice">
+                                                    <Radio label=true>是</Radio>
+                                                    <Radio label=false>否</Radio>
                                                 </RadioGroup>
                                             </FormItem>
-                                            <FormItem label="Hobby" prop="interest">
-                                                <CheckboxGroup v-model="formValidate.interest">
-                                                    <Checkbox label="Eat"></Checkbox>
-                                                    <Checkbox label="Sleep"></Checkbox>
-                                                    <Checkbox label="Run"></Checkbox>
-                                                    <Checkbox label="Movie"></Checkbox>
-                                                </CheckboxGroup>
+                                            <FormItem label="金额" prop="city">
+                                                <InputNumber :max="10000" :min="0" v-model="formValidate.money"></InputNumber>
                                             </FormItem>
-                                            <FormItem label="Desc" prop="desc">
-                                                <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                                            <FormItem label="一级科目" prop="city">
+                                                <Select v-model="formValidate.classA" placeholder="Select your city">
+                                                    <Option value="beijing">现金</Option>
+                                                    <Option value="shanghai">公司代购</Option>
+                                                    <Option value="shenzhen">转账</Option>
+                                                </Select>
                                             </FormItem>
-                                            <!-- <FormItem>
-                                                <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
-                                                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
-                                            </FormItem> -->
-                                        <!-- </Form> -->
+                                            <FormItem label="三级科目" prop="city">
+                                                <Select v-model="formValidate.classC" placeholder="Select your city">
+                                                    <Option value="beijing">现金</Option>
+                                                    <Option value="shanghai">公司代购</Option>
+                                                    <Option value="shenzhen">转账</Option>
+                                                </Select>
+                                            </FormItem>
+                                            <FormItem label="借款事由" prop="mail">
+                                                <Input v-model="formValidate.reason" placeholder="Enter your e-mail"></Input>
+                                            </FormItem>
                                     </div>
                                 </Col>
                                 <Col span="4">
                                     <div>
-                                        <!-- <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="0" label-position="top"> -->
+                                        
                                             <FormItem label="参与人">
-                                                <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
+                                                <Input v-model="formValidate.participants" placeholder="请输入参与人的姓名"></Input>
                                             </FormItem>
                                             <FormItem label="地区" prop="mail">
-                                                <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+                                                <Input v-model="formValidate.area" placeholder="请输入所在地区"></Input>
                                             </FormItem>
                                             <FormItem label="项目组" prop="mail">
-                                                <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+                                                <Input v-model="formValidate.project" placeholder="所在项目组"></Input>
                                             </FormItem>
-                                            <!-- <FormItem label="借款方式" prop="city">
-                                                <Select v-model="formValidate.city" placeholder="Select your city">
-                                                    <Option value="beijing">New York</Option>
-                                                    <Option value="shanghai">London</Option>
-                                                    <Option value="shenzhen">Sydney</Option>
-                                                </Select>
-                                            </FormItem> -->
+                                            
                                             <FormItem label="项目名称" prop="mail">
-                                                <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+                                                <Input v-model="formValidate.projectName" placeholder="这个项目有名字吗"></Input>
                                             </FormItem>
-                                            <FormItem label="Gender" prop="gender">
-                                                <RadioGroup v-model="formValidate.gender">
-                                                    <Radio label="male">Male</Radio>
-                                                    <Radio label="female">Female</Radio>
+                                            <FormItem label="是否补写" prop="gender1">
+                                                <RadioGroup v-model="formValidate.writeUp">
+                                                    <Radio label=true>是</Radio>
+                                                    <Radio label=false>否</Radio>
                                                 </RadioGroup>
                                             </FormItem>
-                                            <FormItem label="Hobby" prop="interest">
-                                                <CheckboxGroup v-model="formValidate.interest">
-                                                    <Checkbox label="Eat"></Checkbox>
-                                                    <Checkbox label="Sleep"></Checkbox>
-                                                    <Checkbox label="Run"></Checkbox>
-                                                    <Checkbox label="Movie"></Checkbox>
-                                                </CheckboxGroup>
+                                            <FormItem label="无发票备注" prop="mail">
+                                                <Input v-model="formValidate.noInvoice" placeholder="请输入无发票备注"></Input>
                                             </FormItem>
-                                            <FormItem label="Desc" prop="desc">
-                                                <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                                            <FormItem label="二级科目" prop="city">
+                                                <Select v-model="formValidate.classB" placeholder="Select your city">
+                                                    <Option value="beijing">现金</Option>
+                                                    <Option value="shanghai">公司代购</Option>
+                                                    <Option value="shenzhen">转账</Option>
+                                                </Select>
                                             </FormItem>
-                                            <FormItem>
-                                                <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
-                                                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+                                            <FormItem label="是否有准备金" prop="gender1">
+                                                <RadioGroup v-model="formValidate.readyMoney">
+                                                    <Radio label=true>是</Radio>
+                                                    <Radio label=false>否</Radio>
+                                                </RadioGroup>
                                             </FormItem>
-                                        
                                     </div>
+                                </Col>
+                                <Col span="15">
+                                    <vue-chart type="bar" :data="chartData"></vue-chart>
+                                    <vue-chart type="line" :data="chartData"></vue-chart>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span="8" offset="1">
+                                    <FormItem label="商品链接" prop="mail">
+                                        <Input v-model="formValidate.link" placeholder="请输入商品链接"></Input>
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span="8" offset="1">
+                                    <FormItem label="备注">
+                                        <Input v-model="formValidate.remarks" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="你是不是想说点什么"></Input>
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col offset="1">
+                                    <FormItem>
+                                        <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
+                                        <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+                                    </FormItem>
                                 </Col>
                             </Row>
                             </Form>
                         </TabPane>
-                        <!-- <TabPane label="Linux" icon="social-tux">标签三的内容</TabPane> -->
                     </Tabs>
                     
                 </Content>
@@ -228,7 +247,100 @@
     </div>
 </template>
 <script>
-var columns10 = [
+    import expandRow from './table-expand.vue';
+    import VueChart from 'vue-chart-js';
+    export default {
+        components: { 
+            expandRow,
+            VueChart
+        },
+        data () {
+            return {
+                see: true,
+                cai: "1-1",
+                formValidate: {
+                    borrower: '',
+                    charge: '',
+                    participants: '',
+                    area: '',
+                    project: '',
+                    projectName: '',
+                    wayOfBorrowing: '',
+                    classA: '',
+                    classB: '',
+                    classC: '',
+                    writeUp: '',
+                    reason: '',
+                    money: 0,
+                    invoice: '',
+                    noInvoice: '',
+                    readyMoney: '',
+                    link: '',
+                },
+                chartData: {
+                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                ruleValidate: {
+                    borrower: [
+                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+                    ],
+                    charge: [
+                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
+                        // { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+                    ],
+                    city: [
+                        { required: true, message: 'Please select the city', trigger: 'change' }
+                    ],
+                    city: [
+                        { required: true, message: 'Please select the city', trigger: 'change' }
+                    ],
+                    city: [
+                        { required: true, message: 'Please select the city', trigger: 'change' }
+                    ],
+                    gender: [
+                        { required: true, message: 'Please select gender', trigger: 'change' }
+                    ],
+                    gender1: [
+                        { required: true, message: 'Please select gender', trigger: 'change' }
+                    ],
+                    interest: [
+                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
+                        { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
+                    ],
+                    date: [
+                        { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
+                    ],
+                    // time: [
+                    //     { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
+                    // ],
+                    desc: [
+                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
+                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
+                    ]
+                },
+                isCollapsed: false,
+                columns10: [
                     {
                         type: 'selection',
                         width: 60,
@@ -305,136 +417,7 @@ var columns10 = [
                             ]);
                         }
                     }
-                ];
-    var columns101 = [
-                    {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
-                    {
-                        type: 'expand',
-                        width: 50,
-                        render: (h, params) => {
-                            return h(expandRow, {
-                                props: {
-                                    row: params.row
-                                }
-                            })
-                        }
-                    },
-                    {
-                        title: '填单人',
-                        key: 'name'
-                    },
-                    {
-                        title: '填单日期',
-                        key: 'age'
-                    },
-                    {
-                        title: '借款金额(元)',
-                        key: 'address'
-                    },
-                    {
-                        title: '预计借款日期',
-                        key: 'address'
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        // width: 150,
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', [
-                                // h('Button', {
-                                //     props: {
-                                //         type: 'primary',
-                                //         size: 'small'
-                                //     },
-                                //     style: {
-                                //         marginRight: '5px'
-                                //     },
-                                //     on: {
-                                //         click: () => {
-                                //             this.show(params.index)
-                                //         }
-                                //     }
-                                // }, '编辑'),
-                                // h('Button', {
-                                //     props: {
-                                //         type: 'error',
-                                //         size: 'small'
-                                //     },
-                                //     style: {
-                                //         marginRight: '5px'
-                                //     },
-                                //     on: {
-                                //         click: () => {
-                                //             this.remove(params.index)
-                                //         }
-                                //     }
-                                // }, '删除'),
-                                h('Button', {
-                                    props: {
-                                        type: '',
-                                        size: 'small'
-                                    },
-                                },'分析')
-                            ]);
-                        }
-                    }
-                ];
-    
-    // import columns10 from './test.js';
-    import expandRow from './table-expand.vue';
-
-    export default {
-        components: { expandRow },
-        data () {
-            return {
-                show: true,
-                cai: "1-1",
-                formValidate: {
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
-                    date: '',
-                    time: '',
-                    desc: ''
-                },
-                ruleValidate: {
-                    name: [
-                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-                    ],
-                    mail: [
-                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
-                    ],
-                    gender: [
-                        { required: true, message: 'Please select gender', trigger: 'change' }
-                    ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-                        { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-                    ],
-                    date: [
-                        { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
-                    ],
-                    // time: [
-                    //     { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
-                    // ],
-                    desc: [
-                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-                    ]
-                },
-                isCollapsed: false,
-                columns10: columns10,
+                ],
                 data9: [
                     {
                         name: 'John Brown',
@@ -523,14 +506,564 @@ var columns10 = [
                 this.$refs[name].resetFields();
             },
             menu (name) {
-                var _this = this;
+                // var _this = this;
                 // console.log(columns10.test)
                 if (name=="1-2") {
-                    _this.show = false
-                    _this.columns10 = columns101
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '审核详情'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'分析')
+                            ]);
+                        }
+                    }
+                ]
                 }else if (name=="1-1") {
-                    _this.show = true
-                    _this.columns10 = columns10
+                    this.see = true
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.showl(params.index)
+                                        }
+                                    }
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '删除'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-3") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '付款'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-4") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '确认收款'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-5") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'info',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '寄件'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '还款'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-6") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '核对'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-7") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '寄件信息'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
+                }else if (name=="1-8") {
+                    this.see = false
+                    this.columns10 = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        type: 'expand',
+                        width: 50,
+                        render: (h, params) => {
+                            return h(expandRow, {
+                                props: {
+                                    row: params.row
+                                }
+                            })
+                        }
+                    },
+                    {
+                        title: '填单人',
+                        key: 'name'
+                    },
+                    {
+                        title: '填单日期',
+                        key: 'age'
+                    },
+                    {
+                        title: '借款金额(元)',
+                        key: 'address'
+                    },
+                    {
+                        title: '预计借款日期',
+                        key: 'address'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        // width: 150,
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: '',
+                                        size: 'small'
+                                    },
+                                },'审核详情')
+                            ]);
+                        }
+                    }
+                ]
                 }
             }
         }

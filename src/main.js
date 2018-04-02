@@ -5,10 +5,15 @@ import App from './App'
 import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import VueChart from 'vue-chart-js'
 
 Vue.config.productionTip = false
 
-Vue.use(iView);
+Vue.use(iView,VueAxios,axios,VueChart);
+
+Vue.prototype.$http = axios;
 
 /* eslint-disable no-new */
 new Vue({
