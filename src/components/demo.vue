@@ -126,47 +126,47 @@
                                             <FormItem label="负责人" prop="charge">
                                                 <Input v-model="formValidate.charge" placeholder="请输入负责人的姓名"></Input>
                                             </FormItem>
-                                            <FormItem label="借款方式" prop="city">
+                                            <FormItem label="借款方式" prop="wayOfBorrowing">
                                                 <Select v-model="formValidate.wayOfBorrowing" placeholder="选择你的借款方式">
-                                                    <Option value="beijing">现金</Option>
-                                                    <Option value="shanghai">公司代购</Option>
-                                                    <Option value="shenzhen">转账</Option>
+                                                    <Option value="现金">现金</Option>
+                                                    <Option value="公司代购">公司代购</Option>
+                                                    <Option value="转账">转账</Option>
                                                 </Select>
                                             </FormItem>
-                                            <FormItem label="预计借款时间" prop="date">
-                                                <Row>
-                                                    <Col span="24">
-                                                        <FormItem>
-                                                            <DatePicker type="date" placeholder="选一个好的时机" v-model="formValidate.date"></DatePicker>
-                                                        </FormItem>
-                                                    </Col>
-                                                </Row>
+                                            <FormItem label="预计借款时间" prop="estimateTime">
+                                                <!-- <Row> -->
+                                                    <!-- <Col span="24"> -->
+                                                        <!-- <FormItem> -->
+                                                            <DatePicker type="date" placeholder="选一个好的时机" v-model="formValidate.estimateTime"></DatePicker>
+                                                        <!-- </FormItem> -->
+                                                    <!-- </Col> -->
+                                                <!-- </Row> -->
                                             </FormItem>
-                                            <FormItem label="是否有发票" prop="gender">
+                                            <FormItem label="是否有发票" prop="invoice">
                                                 <RadioGroup v-model="formValidate.invoice">
                                                     <Radio label=true>是</Radio>
                                                     <Radio label=false>否</Radio>
                                                 </RadioGroup>
                                             </FormItem>
-                                            <FormItem label="金额" prop="city">
+                                            <FormItem label="金额" prop="money">
                                                 <InputNumber :max="10000" :min="0" v-model="formValidate.money"></InputNumber>
                                             </FormItem>
-                                            <FormItem label="一级科目" prop="city">
-                                                <Select v-model="formValidate.classA" placeholder="Select your city">
-                                                    <Option value="beijing">现金</Option>
-                                                    <Option value="shanghai">公司代购</Option>
-                                                    <Option value="shenzhen">转账</Option>
+                                            <FormItem label="一级科目" prop="classA">
+                                                <Select v-model="formValidate.classA" placeholder="请选择一个一级科目">
+                                                    <Option value="主营业务成本">主营业务成本</Option>
+                                                    <Option value="办公用品">办公用品</Option>
                                                 </Select>
                                             </FormItem>
-                                            <FormItem label="三级科目" prop="city">
-                                                <Select v-model="formValidate.classC" placeholder="Select your city">
-                                                    <Option value="beijing">现金</Option>
-                                                    <Option value="shanghai">公司代购</Option>
-                                                    <Option value="shenzhen">转账</Option>
+                                            <FormItem label="三级科目" prop="classC">
+                                                <Select v-model="formValidate.classC" placeholder="请选择一个三级科目">
+                                                    <Option value="餐费">餐费</Option>
+                                                    <Option value="交通费">交通费</Option>
+                                                    <Option value="房租">房租</Option>
+                                                    <Option value="办公用品">办公用品</Option>
                                                 </Select>
                                             </FormItem>
-                                            <FormItem label="借款事由" prop="mail">
-                                                <Input v-model="formValidate.reason" placeholder="Enter your e-mail"></Input>
+                                            <FormItem label="借款事由" prop="reason">
+                                                <Input v-model="formValidate.reason" placeholder="说下理由呗"></Input>
                                             </FormItem>
                                     </div>
                                 </Col>
@@ -176,33 +176,34 @@
                                             <FormItem label="参与人">
                                                 <Input v-model="formValidate.participants" placeholder="请输入参与人的姓名"></Input>
                                             </FormItem>
-                                            <FormItem label="地区" prop="mail">
+                                            <FormItem label="地区" prop="area">
                                                 <Input v-model="formValidate.area" placeholder="请输入所在地区"></Input>
                                             </FormItem>
-                                            <FormItem label="项目组" prop="mail">
+                                            <FormItem label="项目组" prop="project">
                                                 <Input v-model="formValidate.project" placeholder="所在项目组"></Input>
                                             </FormItem>
                                             
-                                            <FormItem label="项目名称" prop="mail">
+                                            <FormItem label="项目名称" prop="projectName">
                                                 <Input v-model="formValidate.projectName" placeholder="这个项目有名字吗"></Input>
                                             </FormItem>
-                                            <FormItem label="是否补写" prop="gender1">
+                                            <FormItem label="是否补写" prop="writeUp">
                                                 <RadioGroup v-model="formValidate.writeUp">
                                                     <Radio label=true>是</Radio>
                                                     <Radio label=false>否</Radio>
                                                 </RadioGroup>
                                             </FormItem>
-                                            <FormItem label="无发票备注" prop="mail">
+                                            <FormItem label="无发票备注" prop="noInvoice">
                                                 <Input v-model="formValidate.noInvoice" placeholder="请输入无发票备注"></Input>
                                             </FormItem>
-                                            <FormItem label="二级科目" prop="city">
-                                                <Select v-model="formValidate.classB" placeholder="Select your city">
-                                                    <Option value="beijing">现金</Option>
-                                                    <Option value="shanghai">公司代购</Option>
-                                                    <Option value="shenzhen">转账</Option>
+                                            <FormItem label="二级科目" prop="classB">
+                                                <Select v-model="formValidate.classB" placeholder="请选择一个二级科目">
+                                                    <Option value="市场费">市场费</Option>
+                                                    <Option value="员工培训">员工培训</Option>
+                                                    <Option value="办公费">办公费</Option>
+                                                    <Option value="办公用品">办公用品</Option>
                                                 </Select>
                                             </FormItem>
-                                            <FormItem label="是否有准备金" prop="gender1">
+                                            <FormItem label="是否有准备金" prop="readyMoney">
                                                 <RadioGroup v-model="formValidate.readyMoney">
                                                     <Radio label=true>是</Radio>
                                                     <Radio label=false>否</Radio>
@@ -213,11 +214,23 @@
                                 <Col span="15">
                                     <vue-chart type="bar" :data="chartData"></vue-chart>
                                     <vue-chart type="line" :data="chartData"></vue-chart>
+                                    <!-- <h1>{{formValidate.borrower}}</h1>
+                                    <h1>{{formValidate.charge}}</h1>
+                                    <h1>{{formValidate.participants}}</h1>
+                                    <h1>{{formValidate.estimateTime}}</h1>
+                                    <h1>{{formValidate.area}}</h1>
+                                    <h1>{{formValidate.project}}</h1>
+                                    <h1>{{formValidate.projectName}}</h1>
+                                    <h1>{{formValidate.wayOfBorrowing}}</h1>
+                                    <h1>{{formValidate.classA}}</h1>
+                                    <h1>{{formValidate.classB}}</h1>
+                                    <h1>{{formValidate.classC}}</h1>
+                                    <h1>{{formValidate.writeUp}}</h1> -->
                                 </Col>
                             </Row>
                             <Row>
                                 <Col span="8" offset="1">
-                                    <FormItem label="商品链接" prop="mail">
+                                    <FormItem label="商品链接" prop="link">
                                         <Input v-model="formValidate.link" placeholder="请输入商品链接"></Input>
                                     </FormItem>
                                 </Col>
@@ -225,7 +238,7 @@
                             <Row>
                                 <Col span="8" offset="1">
                                     <FormItem label="备注">
-                                        <Input v-model="formValidate.remarks" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="你是不是想说点什么"></Input>
+                                        <Input v-model="formValidate.remarks" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="要不要说点什么呢"></Input>
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -262,6 +275,7 @@
                     borrower: '',
                     charge: '',
                     participants: '',
+                    estimateTime: '',
                     area: '',
                     project: '',
                     projectName: '',
@@ -276,6 +290,7 @@
                     noInvoice: '',
                     readyMoney: '',
                     link: '',
+                    remarks: '',
                 },
                 chartData: {
                     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -303,17 +318,41 @@
                 },
                 ruleValidate: {
                     borrower: [
-                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+                        { required: true, message: '借款人不能为空', trigger: 'blur' }
                     ],
                     charge: [
-                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
+                        { required: true, message: '负责人不能为空', trigger: 'blur' },
                         // { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
                     ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
+                    area: [
+                        { required: true, message: '地区不能为空', trigger: 'blur' },
                     ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
+                    project: [
+                        { required: true, message: '项目组不能为空', trigger: 'blur' },
+                    ],
+                    projectName: [
+                        { required: true, message: '项目名称不能为空', trigger: 'blur' },
+                    ],
+                    noInvoice: [
+                        { required: true, message: '无发票备注不能为空', trigger: 'blur' },
+                    ],
+                    link: [
+                        { required: true, message: '商品链接不能为空', trigger: 'blur' },
+                    ],
+                    reason: [
+                        { required: true, message: '借款事由不能为空', trigger: 'blur' },
+                    ],
+                    money: [
+                        { required: true, type: 'number', message: '金额不能为空', trigger: 'blur' },
+                    ],
+                    area: [
+                        { required: true, message: '地区不能为空', trigger: 'blur' },
+                    ],
+                    wayOfBorrowing: [
+                        { required: true, message: '请选择一种借款方式', trigger: 'change' }
+                    ],
+                    invoice: [
+                        { required: true, message: '有还是没有发票', trigger: 'change' }
                     ],
                     city: [
                         { required: true, message: 'Please select the city', trigger: 'change' }
@@ -321,19 +360,25 @@
                     gender: [
                         { required: true, message: 'Please select gender', trigger: 'change' }
                     ],
-                    gender1: [
-                        { required: true, message: 'Please select gender', trigger: 'change' }
+                    writeUp: [
+                        { required: true, message: '到底是不是补写的', trigger: 'change' }
                     ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-                        { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
+                    readyMoney: [
+                        { required: true, message: '有没有准备钱', trigger: 'change' },
+                        // { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
                     ],
-                    date: [
-                        { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
+                    estimateTime: [
+                        { required: true, type: 'date', message: '预估一下借款的时间', trigger: 'blur' }
                     ],
-                    // time: [
-                    //     { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
-                    // ],
+                    classA: [
+                        { required: true, type: 'string', message: '一级科目不能为空', trigger: 'change' }
+                    ],
+                    classB: [
+                        { required: true, type: 'string', message: '二级科目不能为空', trigger: 'change' }
+                    ],
+                    classC: [
+                        { required: true, type: 'string', message: '三级科目不能为空', trigger: 'change' }
+                    ],
                     desc: [
                         { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
                         { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
@@ -359,19 +404,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -419,50 +464,50 @@
                     }
                 ],
                 data9: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        job: 'Data engineer',
-                        interest: 'badminton',
-                        birthday: '1991-05-14',
-                        book: 'Steve Jobs',
-                        movie: 'The Prestige',
-                        music: 'I Cry'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 25,
-                        address: 'London No. 1 Lake Park',
-                        job: 'Data Scientist',
-                        interest: 'volleyball',
-                        birthday: '1989-03-18',
-                        book: 'My Struggle',
-                        movie: 'Roman Holiday',
-                        music: 'My Heart Will Go On'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        job: 'Data Product Manager',
-                        interest: 'tennis',
-                        birthday: '1992-01-31',
-                        book: 'Win',
-                        movie: 'Jobs',
-                        music: 'Don’t Cry'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        job: 'Data Analyst',
-                        interest: 'snooker',
-                        birthday: '1988-7-25',
-                        book: 'A Dream in Red Mansions',
-                        movie: 'A Chinese Ghost Story',
-                        music: 'actor'
-                    }
+                    // {
+                    //     name: 'John Brown',
+                    //     age: 18,
+                    //     address: 'New York No. 1 Lake Park',
+                    //     job: 'Data engineer',
+                    //     interest: 'badminton',
+                    //     birthday: '1991-05-14',
+                    //     book: 'Steve Jobs',
+                    //     movie: 'The Prestige',
+                    //     music: 'I Cry'
+                    // },
+                    // {
+                    //     name: 'Jim Green',
+                    //     age: 25,
+                    //     address: 'London No. 1 Lake Park',
+                    //     job: 'Data Scientist',
+                    //     interest: 'volleyball',
+                    //     birthday: '1989-03-18',
+                    //     book: 'My Struggle',
+                    //     movie: 'Roman Holiday',
+                    //     music: 'My Heart Will Go On'
+                    // },
+                    // {
+                    //     name: 'Joe Black',
+                    //     age: 30,
+                    //     address: 'Sydney No. 1 Lake Park',
+                    //     job: 'Data Product Manager',
+                    //     interest: 'tennis',
+                    //     birthday: '1992-01-31',
+                    //     book: 'Win',
+                    //     movie: 'Jobs',
+                    //     music: 'Don’t Cry'
+                    // },
+                    // {
+                    //     name: 'Jon Snow',
+                    //     age: 26,
+                    //     address: 'Ottawa No. 2 Lake Park',
+                    //     job: 'Data Analyst',
+                    //     interest: 'snooker',
+                    //     birthday: '1988-7-25',
+                    //     book: 'A Dream in Red Mansions',
+                    //     movie: 'A Chinese Ghost Story',
+                    //     music: 'actor'
+                    // }
                 ]
             }
         },
@@ -480,7 +525,33 @@
                 ]
             }
         },
+        created: function(){
+                var _this = this;
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                .then(function(respone){
+                    // var _this = this;
+                    console.log(respone.data.data.content);
+                    _this.data9 = respone.data.data.content
+                })
+                .catch(function(error){
+                    console.log(error)
+                })
+        },
+        mounted:function(){
+            // console.log(this.data9)
+            // this.data9 = 1
+            // this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+            //     .then(function(respone){
+            //         // var _this = this;
+            //         console.log(respone.data.data.content);
+            //         this.data9 = respone.data.data.content
+            //     })
+            //     .catch(function(error){
+            //         console.log(error)
+            //     })
+        },
         methods: {
+
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
             },
@@ -497,6 +568,14 @@
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         this.$Message.success('Success!');
+                        console.log(this.formValidate)
+                        this.$http.post('http://192.168.0.94:8763/lend/v1/saveOne',this.formValidate)
+                            .then(function(respone){
+                                console.log(respone)
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     } else {
                         this.$Message.error('Fail!');
                     }
@@ -504,6 +583,10 @@
             },
             handleReset (name) {
                 this.$refs[name].resetFields();
+            },
+            dateChange (date) {
+                console.log(date)
+                this.formValidate.estimateTime = date
             },
             menu (name) {
                 // var _this = this;
@@ -529,19 +612,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -595,19 +678,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -675,19 +758,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -741,19 +824,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -807,19 +890,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -887,19 +970,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -953,19 +1036,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',
@@ -1019,19 +1102,19 @@
                     },
                     {
                         title: '填单人',
-                        key: 'name'
+                        key: 'user'
                     },
                     {
                         title: '填单日期',
-                        key: 'age'
+                        key: 'fillTime'
                     },
                     {
                         title: '借款金额(元)',
-                        key: 'address'
+                        key: 'money'
                     },
                     {
                         title: '预计借款日期',
-                        key: 'address'
+                        key: 'estimateTime'
                     },
                     {
                         title: '操作',

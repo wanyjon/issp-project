@@ -11,11 +11,20 @@
 // import VueChart from 'vue-chart-js'
  
 export default {
+  data(){
+    return {
+      data9: [{
+        hello:'world'
+      }],
+    }
+  },
   methods: {
     test() {
+      var _this = this;
       this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
         .then(function(respone){
-          console.log(respone)
+          // console.log(respone)
+          console.log(_this.data9)
         })
     }
   }

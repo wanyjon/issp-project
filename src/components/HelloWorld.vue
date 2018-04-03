@@ -68,14 +68,6 @@
                             <MenuItem name="2-1">Option 1</MenuItem>
                             <MenuItem name="2-2">Option 2</MenuItem>
                         </Submenu>
-                        <!-- <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                I
-                            </template>
-                            <MenuItem name="3-1">Option 1</MenuItem>
-                            <MenuItem name="3-2">Option 2</MenuItem>
-                        </Submenu> -->
                     </Menu>
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
