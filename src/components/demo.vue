@@ -53,15 +53,77 @@
         vertical-align: middle;
         font-size: 22px;
     }
+    h2{
+        color: white
+    }
+
 </style>
 <template>
     <div class="layout">
         <Layout>
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-                <div align="center" style="margin-top: 15px;margin-bottom: 15px">
+                <div align="center" style="margin-top: 15px;margin-bottom: 30px">
                     <!-- <img src="@/assets/1028945360.jpg"> -->
                     <Avatar icon="person" size="large" />
-                    <h2 style="color: white">wany</h2>
+                    <h2>wany</h2>
+                    <p style="color: white">Action of the king</p>
+                    <Row>
+                        <Col span='16' offset="4">
+                            <Row>
+                                <Col span="8">
+                                    <h2>12</h2>
+                                </Col>
+                                <Col span="8">
+                                    <div style="float:left;width: 1px;height: 25px; background: white;margin-left: 20px"></div> 
+                                </Col>
+                                <Col span="8">
+                                    <h2>234</h2>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span='16' offset="4">
+                            <div style="margin-bottom: 15px">
+                                <Row>
+                                    <Col span="8">
+                                        <p style="color: white">action</p>
+                                    </Col>
+                                    <Col span="8">
+                                        <div style="float:left;width: 1px;height: 25px; background: #495060;margin-left: 20px"></div> 
+                                    </Col>
+                                    <Col span="8">
+                                        <p style="color: white">king</p>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Row>
+                                <Col span="6">
+                                    <Icon type="power" size="20" color="white"></Icon>
+                                </Col>
+                                <Col span="6">
+                                    <!-- <Badge dot> -->
+                                        <!-- <Icon type="ios-bell-outline" size="26"></Icon> -->
+                                    <!-- </Badge> -->
+                                    <!-- <div style="float:left;width: 1px;height: 25px; background: #495060;margin-left: 20px"></div>  -->
+                                    <Icon type="social-youtube" size="20" color="white"></Icon>
+                                </Col>
+                                <Col span="6">
+                                    <Badge dot>
+                                        <Icon type="chatbox" size="20" color="white"></Icon>
+                                    </Badge>
+                                </Col>
+                                <Col span="6">
+                                    <Icon type="person-add" size="20" color="white"></Icon>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                    
                     <!-- <Button type="primary">info</Button> -->
 
                 </div>
@@ -101,8 +163,8 @@
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px',padding: '20px'}">
                     <Tabs>
                         <TabPane label="列表" icon="navicon">
-                            <Table :columns="columns10" :data="data9"></Table>
-                            <div style="margin-top: 15px">
+                            <Table :columns="columns10" :data="data9" :loading="loading"></Table>
+                            <div style="margin-top: 15px;margin-bottom: 15px">
                                 <Button style="margin-right: 5px">这是一个无所事事的按钮</Button>
                                 <Poptip
                                     confirm
@@ -111,6 +173,9 @@
                                     @on-cancel="cancel">
                                     <Button type="error">批量删除</Button>
                                 </Poptip>
+                            </div>
+                            <div align="center">
+                                <Page :total="100"></Page>
                             </div>
                             
                         </TabPane>
@@ -269,6 +334,7 @@
         },
         data () {
             return {
+                loading: true,
                 see: true,
                 cai: "1-1",
                 formValidate: {
@@ -458,56 +524,61 @@
                                         type: '',
                                         size: 'small'
                                     },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
                                 },'审核')
                             ]);
                         }
                     }
                 ],
                 data9: [
-                    // {
-                    //     name: 'John Brown',
-                    //     age: 18,
-                    //     address: 'New York No. 1 Lake Park',
-                    //     job: 'Data engineer',
-                    //     interest: 'badminton',
-                    //     birthday: '1991-05-14',
-                    //     book: 'Steve Jobs',
-                    //     movie: 'The Prestige',
-                    //     music: 'I Cry'
-                    // },
-                    // {
-                    //     name: 'Jim Green',
-                    //     age: 25,
-                    //     address: 'London No. 1 Lake Park',
-                    //     job: 'Data Scientist',
-                    //     interest: 'volleyball',
-                    //     birthday: '1989-03-18',
-                    //     book: 'My Struggle',
-                    //     movie: 'Roman Holiday',
-                    //     music: 'My Heart Will Go On'
-                    // },
-                    // {
-                    //     name: 'Joe Black',
-                    //     age: 30,
-                    //     address: 'Sydney No. 1 Lake Park',
-                    //     job: 'Data Product Manager',
-                    //     interest: 'tennis',
-                    //     birthday: '1992-01-31',
-                    //     book: 'Win',
-                    //     movie: 'Jobs',
-                    //     music: 'Don’t Cry'
-                    // },
-                    // {
-                    //     name: 'Jon Snow',
-                    //     age: 26,
-                    //     address: 'Ottawa No. 2 Lake Park',
-                    //     job: 'Data Analyst',
-                    //     interest: 'snooker',
-                    //     birthday: '1988-7-25',
-                    //     book: 'A Dream in Red Mansions',
-                    //     movie: 'A Chinese Ghost Story',
-                    //     music: 'actor'
-                    // }
+                    {
+                        user: 'John Brown',
+                        fillTime: 18,
+                        money: 'New York No. 1 Lake Park',
+                        estimateTime: 'Data engineer',
+                        interest: 'badminton',
+                        birthday: '1991-05-14',
+                        book: 'Steve Jobs',
+                        movie: 'The Prestige',
+                        music: 'I Cry'
+                    },
+                    {
+                        user: 'Jim Green',
+                        fillTime: 25,
+                        money: 'London No. 1 Lake Park',
+                        estimateTime: 'Data Scientist',
+                        interest: 'volleyball',
+                        birthday: '1989-03-18',
+                        book: 'My Struggle',
+                        movie: 'Roman Holiday',
+                        music: 'My Heart Will Go On'
+                    },
+                    {
+                        user: 'Joe Black',
+                        fillTime: 30,
+                        money: 'Sydney No. 1 Lake Park',
+                        estimateTime: 'Data Product Manager',
+                        interest: 'tennis',
+                        birthday: '1992-01-31',
+                        book: 'Win',
+                        movie: 'Jobs',
+                        music: 'Don’t Cry'
+                    },
+                    {
+                        user: 'Jon Snow',
+                        fillTime: 26,
+                        money: 'Ottawa No. 2 Lake Park',
+                        estimateTime: 'Data Analyst',
+                        interest: 'snooker',
+                        birthday: '1988-7-25',
+                        book: 'A Dream in Red Mansions',
+                        movie: 'A Chinese Ghost Story',
+                        music: 'actor'
+                    }
                 ]
             }
         },
@@ -556,9 +627,15 @@
                 this.$refs.side1.toggleCollapse();
             },
             show (index) {
-                this.$Modal.info({
+                this.$Modal.confirm({
                     title: 'User Info',
-                    content: `Name：${this.data9[index].name}<br>Age：${this.data9[index].age}<br>Address：${this.data9[index].address}`
+                    content: `Name：${this.data9[index].user}<br>Age：${this.data9[index].age}<br>Address：${this.data9[index].address}`,
+                    onOk: () => {
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        this.$Message.info('Clicked cancel');
+                    }
                 })
             },
             remove (index) {

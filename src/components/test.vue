@@ -1,33 +1,48 @@
 <template>
-  <!-- <div style="width=100px;height=100px">
-    <vue-chart type="bar" :data="chartData"></vue-chart>
-  </div> -->
-
-  <Button type="primary" @click="test">Primary</Button>
-  
+  <div>
+    <Button @click="confirm">Normal</Button>
+    <Button @click="custom">Custom button text</Button>
+    <Button @click="async">Asynchronous closing</Button>
+    <Icon type="power" size="50" color="white"></Icon>
+  </div>
+    
 </template>
- 
 <script>
-// import VueChart from 'vue-chart-js'
- 
-export default {
-  data(){
-    return {
-      data9: [{
-        hello:'world'
-      }],
+    export default {
+        methods: {
+            confirm () {
+                this.$Modal.confirm({
+                    // title: 'Title',
+                    content: '<p>Content of dialog</p><p>Content of dialog</p>',
+                    onOk: () => {
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        this.$Message.info('Clicked cancel');
+                    }
+                });
+            },
+            custom () {
+                this.$Modal.confirm({
+                    title: 'Title',
+                    content: '<p>Content of dialog</p><p>Content of dialog</p>',
+                    okText: 'OK',
+                    cancelText: 'Cancel'
+                });
+            },
+            async () {
+                this.$Modal.confirm({
+                    title: 'Title',
+                    content: '<p>The dialog box will be closed after 2 seconds</p>',
+                    loading: true,
+                    onOk: () => {
+                        setTimeout(() => {
+                            this.$Modal.remove();
+                            this.$Message.info('Asynchronously close the dialog box');
+                        }, 2000);
+                    }
+                });
+            }
+        }
     }
-  },
-  methods: {
-    test() {
-      var _this = this;
-      this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
-        .then(function(respone){
-          // console.log(respone)
-          console.log(_this.data9)
-        })
-    }
-  }
-  
-}
 </script>
