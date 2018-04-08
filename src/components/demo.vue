@@ -393,10 +393,18 @@
                     readyMoney: '',
                     link: '',
                     remarks: '',
+                    payOrigin: '',
+                    payDate: '',
                 },
                 auditings: {
                     pass: '',
                     opinion: '',
+                    reimbursement: '',
+                    borrowMoney: '',
+                    sendBack: '',
+                    returnDate: '',
+                    restitution: '',
+                    account: '',
                 },
                 chartData: {
                     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -666,6 +674,7 @@
             //     })
         },
         methods: {
+
             selectRemove(selection,row){
 
                 console.log(selection)
@@ -713,45 +722,62 @@
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
             },
+            show3 (index) {
+                this.$Modal.confirm({
+                            // title: "title",
+                            // content: "content",
+                            onOk: () => {                                         
+                                this.$http.put('http://192.168.0.94:8763/lend/v1/waitConfirmEdit',this.data9[index])
+                                    .then(function(respone){
+                                        location.reload()
+                                        
+                                    })
+                                    .catch(function(error){
+                                        console.log(error)
+                                    })
+
+                                this.$Message.info('Clicked ok');
+                            },
+                            okText: '付款',
+                            cancelText: "取消",
+                            render: (h) => {
+                                return h('div',[
+                                    h('h1', 'hello word'),
+                                    
+                                
+                                ])  
+                        
+                            }
+                })
+                        // });
+            },
             show2 (index) {
                 this.$Modal.confirm({
                     okText: '付款',
-                    cancelText: '否决',
+                    cancelText: '取消',
                     onOk: () => {                                         
-                        // this.auditings.pass = true
-                        // console.log(this.auditings)
-                        // this.data9[index].auditings.push(this.auditings)
-                        // console.log(this.data9[index])
-                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitPaymentEdit',this.data9[index])
-                        //     .then(function(respone){
-                        //         console.log(respone)
-
-                        //     })
-                        //     .catch(function(error){
-                        //         console.log(error)
-                        //     })
-                        
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitPaymentEdit',this.data9[index])
+                            .then(function(respone){
+                                location.reload()
+                                // var _this = this;
+                                // console.log(respone.data.data.content);
+                                // _this.data9 = respone.data.data.content
+                                // _this.total = respone.data.data.totalSize
+                                // _this.loading = false
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
 
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
-                        // this.auditings.pass = false
-                        // console.log(this.auditings)
-                        // this.data9[index].auditings.push(this.auditings)
-                        // console.log(this.data9[index])
-                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
-                        //     .then(function(respone){
-                        //         console.log(respone)
-                        //     })
-                        //     .catch(function(error){
-                        //         console.log(error)
-                        //     })
+                        
                         this.$Message.info('Clicked cancel');
                     },
                     render: (h) => {
                         return h('div',[
-                                    h('h1', '付款'
-                                    ),
+                                    h('h1', '付款'),
                                     h('h3', '预计借款日期：'+this.data9[index].estimateTime),
                                     h('h3', '借款人：'+this.data9[index].borrower),
                                     h('h3', '负责人：'+this.data9[index].charge),
@@ -765,23 +791,52 @@
                                     h('h3', '总金额：'+this.data9[index].money+'元'),
                                     h('h3', '借款事由：'+this.data9[index].reason),
                                     h('h3', '商品链接：'+this.data9[index].link),
-                                    h('Select', [
+
+                                    h('Select', {
+                                                on: {
+                                                    input: (val) => {
+                                                        this.data9[index].payOrigin = val;
+                                                    }
+                                                },
+                                                style: {
+                                                    marginBottom: '15px'
+                                                },
+
+                                            },[
                                             h('Option',{
                                                 props: {
-                                                value: 'hello',
-                                                // autofocus: true,
-                                                // placeholder: '请填写审核意见'
+                                                    value: '北京艾佳天诚信息技术有限公司',
+                                                    // key: 'hello'
+                                                    // autofocus: true,
+                                                    // placeholder: '请填写审核意见'
                                                 },
                                             }),
                                             h('Option',{
                                                 props: {
-                                                value: 'hello world',
-                                                // autofocus: true,
-                                                // placeholder: '请填写审核意见'
+                                                    value: '艾佳个人户曾强',
+                                                    // key: 'hello'
+                                                    // autofocus: true,
+                                                    // placeholder: '请填写审核意见'
+                                                },
+                                            }),
+                                            h('Option',{
+                                                props: {
+                                                    value: '黄应桃',
+                                                    // key: 'hello world'
+                                                    // autofocus: true,
+                                                    // placeholder: '请填写审核意见'
                                                 },
                                             }),
                                         ],
+                                        
                                     ),
+                                    h('DatePicker',{
+                                                on: {
+                                                    input: (val) => {
+                                                        this.data9[index].payDate = val;
+                                                    }
+                                                },
+                                    })
                                 
                         ])  
                         
@@ -860,6 +915,235 @@
                     }
                 })
             },
+            show4 (index) {
+                this.$Modal.confirm({
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk: () => {
+                        this.auditings.pass = true
+                        console.log(this.auditings)
+                        this.data9[index].auditings.push(this.auditings)
+                        console.log(this.data9[index])
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitRepayment',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        // this.auditings.pass = false
+                        // console.log(this.auditings)
+                        // this.data9[index].auditings.push(this.auditings)
+                        // console.log(this.data9[index])
+                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
+                        //     .then(function(respone){
+                        //         console.log(respone)
+                        //     })
+                        //     .catch(function(error){
+                        //         console.log(error)
+                        //     })
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('h1', 'hello world'
+                                    ),
+                                    h('h3', '预计借款日期：'+this.data9[index].estimateTime),
+                                    h('h3', '借款人：'+this.data9[index].borrower),
+                                    h('h3', '负责人：'+this.data9[index].charge),
+                                    h('h3', '借款方式：'+this.data9[index].wayOfBorrowing),
+                                    h('h3', '参与人：'+this.data9[index].participants),
+                                    h('h3', '地区：'+this.data9[index].area),
+                                    h('h3', '项目组名称：'+this.data9[index].projectName),
+                                    h('h3', '一级科目：'+this.data9[index].classA),
+                                    h('h3', '二级科目：'+this.data9[index].classB),
+                                    h('h3', '三级科目：'+this.data9[index].classC),
+                                    h('h3', '总金额：'+this.data9[index].money+'元'),
+                                    h('h3', '借款事由：'+this.data9[index].reason),
+                                    h('h3', '商品链接：'+this.data9[index].link),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].reimbursement,
+                                            autofocus: true,
+                                            placeholder: '报销金额'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].reimbursement = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].borrowMoney,
+                                            autofocus: true,
+                                            placeholder: '借款金额'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].borrowMoney = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].sendBack,
+                                            autofocus: true,
+                                            placeholder: '退回金额'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].sendBack = val;
+                                            }
+                                        }
+                                    }),
+                                    h('DatePicker', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].returnDate,
+                                            autofocus: true,
+                                            placeholder: '归还日期'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].returnDate = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].restitution,
+                                            autofocus: true,
+                                            placeholder: '归还方式'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].restitution = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].account,
+                                            autofocus: true,
+                                            placeholder: '归还账户'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].account = val;
+                                            }
+                                        }
+                                    }),
+                                
+                        ])
+                        
+                    }
+                })
+            },
+            show5 (index) {
+                this.$Modal.confirm({
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk: () => {
+                        this.auditings.pass = true
+                        console.log(this.auditings)
+                        this.data9[index].auditings.push(this.auditings)
+                        console.log(this.data9[index])
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitRepayment',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('h1', 'hello world'
+                                    ),
+                                    h('h3', '预计借款日期：'+this.data9[index].estimateTime),
+                                    h('h3', '借款人：'+this.data9[index].borrower),
+                                    h('h3', '负责人：'+this.data9[index].charge),
+                                    h('h3', '借款方式：'+this.data9[index].wayOfBorrowing),
+                                    h('h3', '参与人：'+this.data9[index].participants),
+                                    h('h3', '地区：'+this.data9[index].area),
+                                    h('h3', '项目组名称：'+this.data9[index].projectName),
+                                    h('h3', '一级科目：'+this.data9[index].classA),
+                                    h('h3', '二级科目：'+this.data9[index].classB),
+                                    h('h3', '三级科目：'+this.data9[index].classC),
+                                    h('h3', '总金额：'+this.data9[index].money+'元'),
+                                    h('h3', '借款事由：'+this.data9[index].reason),
+                                    h('h3', '商品链接：'+this.data9[index].link),
+                                    h('h3', '报销金额：'+this.data9[index].auditings[0].reimbursement),
+                                    h('h3', '借款金额：'+this.data9[index].auditings[0].borrowMoney),
+                                    h('h3', '退回金额：'+this.data9[index].auditings[0].sendBack),
+                                    h('h3', '归还日期：'+this.data9[index].auditings[0].returnDate),
+                                    h('h3', '归还方式：'+this.data9[index].auditings[0].restitution),
+                                    h('h3', '归还账户：'+this.data9[index].auditings[0].account),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].auditorModule,
+                                            autofocus: true,
+                                            placeholder: '审核人模块'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].auditorModule = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].auditings[0].verification,
+                                            autofocus: true,
+                                            placeholder: '核对情况'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].auditings[0].verification = val;
+                                            }
+                                        }
+                                    }),
+                                    
+                                
+                        ])
+                        
+                    }
+                })
+            },
             remove (id) {
                 var _this = this;
                 _this.loading = true
@@ -894,7 +1178,7 @@
                         this.$http.post('http://192.168.0.94:8763/lend/v1/saveOne',this.formValidate)
                             .then(function(respone){
                                 _this.loading = true
-                                location.reload()
+                                // location.reload()
                                 // console.log(respone)
                             })
                             .catch(function (error) {
@@ -1234,7 +1518,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            this.show3(params.index)
+                                            // this.remove(params.index)
                                         }
                                     }
                                 }, '确认收款'),
@@ -1325,7 +1610,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            this.show4(params.index)
                                         }
                                     }
                                 }, '还款'),
@@ -1402,7 +1687,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            this.show5(params.index)
                                         }
                                     }
                                 }, '核对'),
