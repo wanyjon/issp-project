@@ -707,17 +707,32 @@
             pageSwitch (index) {
                 var _this = this;
                 _this.loading = true
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index)
-                .then(function(respone){
-                    // var _this = this;
-                    // console.log(respone.data.data.content);
-                    _this.data9 = respone.data.data.content
-                    _this.total = respone.data.data.totalSize
-                    _this.loading = false
-                })
-                .catch(function(error){
-                    console.log(error)
-                })
+                if (cai=="1-1") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (cai=="1-2") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                }
+                
             },
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
@@ -1213,6 +1228,7 @@
                 _this.loading = true
                 // console.log(columns10.test)
                 if (name=="1-2") {
+                    this.cai = "1-2"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1292,6 +1308,7 @@
 
 
                 }else if (name=="1-1") {
+                    this.cai = "1-1"
                     // _this.loading = true
                     this.see = true
                     this.columns10 = [
@@ -1389,6 +1406,7 @@
                             console.log(error)
                         })
                 }else if (name=="1-3") {
+                    this.cai = "1-3"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1467,6 +1485,7 @@
                             console.log(error)
                         })
                 }else if (name=="1-4") {
+                    this.cai = "1-4"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1545,6 +1564,7 @@
                             console.log(error)
                         })
                 }else if (name=="1-5") {
+                    this.cai = "1-5"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1636,6 +1656,7 @@
                             console.log(error)
                         })
                 }else if (name=="1-6") {
+                    this.cai = "1-6"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1713,6 +1734,7 @@
                             console.log(error)
                         })
                 }else if (name=="1-7") {
+                    this.cai = "1-7"
                     this.see = false
                     this.columns10 = [
                     {
@@ -1791,6 +1813,7 @@
                         })
 
                 }else if (name=="1-8") {
+                    this.cai = "1-8"
                     this.see = false
                     this.columns10 = [
                     {
