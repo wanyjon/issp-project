@@ -1,9 +1,9 @@
 <style scoped>
-    img {
-        width: 50%;
-        height: 50%;
+    /*img {
+        width: 30%;
+        height: 30%;
         border-radius: 100%;
-    }
+    }*/
     .layout{
         border: 1px solid #d7dde4;
         background: #f5f7f9;
@@ -56,15 +56,23 @@
     h2{
         color: white
     }
-
+    .center-right{
+        float: right;
+    }
+    .top,.bottom{
+        text-align: center;
+    }
+    body {
+        background: white;
+    }
 </style>
 <template>
     <div class="layout">
         <Layout>
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
                 <div align="center" style="margin-top: 15px;margin-bottom: 30px">
-                    <!-- <img src="@/assets/1028945360.jpg"> -->
-                    <Avatar icon="person" size="large" />
+                    <!-- <img src="@/assets/WechatIMG561.jpeg"> -->
+                    <Avatar size="large" icon="person"/>
                     <h2>wany</h2>
                     <p style="color: white">Action of the king</p>
                     <Row>
@@ -103,19 +111,43 @@
                         <Col>
                             <Row>
                                 <Col span="6">
-                                    <Icon type="power" size="20" color="white"></Icon>
+                                    <!-- <a href=""><Icon type="power" size="20" color="white"></Icon></a> -->
+                                    <div class="top">
+                                        <!-- <Poptip trigger="hover" title="提示标题" content="" placement="top-start">
+                                            <a href=""><Icon type="power" size="20" color="white"></Icon></a>
+                                        </Poptip> -->
+                                        <!-- <Tooltip content="Top Left 文字提示" placement="top-start"> -->
+                                            <!-- <Button>上左</Button> -->
+                                            <!-- <a href=""></a> -->
+                                            <router-link to="/signIn"><Icon type="power" size="20" color="white"></Icon></router-link>
+                                        <!-- </Tooltip> -->
+                                    </div>
+                                    
                                 </Col>
                                 <Col span="6">
                                     <!-- <Badge dot> -->
                                         <!-- <Icon type="ios-bell-outline" size="26"></Icon> -->
                                     <!-- </Badge> -->
                                     <!-- <div style="float:left;width: 1px;height: 25px; background: #495060;margin-left: 20px"></div>  -->
-                                    <Icon type="social-youtube" size="20" color="white"></Icon>
+                                    <div class="top">
+                                        <!-- <Poptip trigger="hover" title="提示标题" content="" placement="top"> -->
+                                            <a href=""><Icon type="social-youtube" size="20" color="white"></Icon></a>
+                                        <!-- </Poptip> -->
+                                    </div>
+                                    
+                                    
                                 </Col>
                                 <Col span="6">
                                     <Badge dot>
                                         <Icon type="chatbox" size="20" color="white"></Icon>
                                     </Badge>
+                                    <!-- <div class="top">
+                                        <Poptip trigger="hover" title="提示标题" content="" placement="top">
+                                            <Badge dot>
+                                                <a href=""><Icon type="chatbox" size="20" color="white"></Icon></Icon></a>
+                                            </Badge>
+                                        </Poptip>
+                                    </div> -->
                                 </Col>
                                 <Col span="6">
                                     <Icon type="person-add" size="20" color="white"></Icon>
@@ -161,8 +193,8 @@
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '20px 20px 0'}" type="navicon-round" size="24"></Icon>
                 </Header>
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px',padding: '20px'}">
-                    <Tabs>
-                        <TabPane label="列表" icon="navicon">
+                    <Tabs :value="name">
+                        <TabPane label="列表" icon="navicon" name="name1">
                             <Table :columns="columns10" :data="data9" :loading="loading"></Table>
                             <div style="margin-top: 15px;margin-bottom: 15px">
                                 <Button style="margin-right: 5px">这是一个无所事事的按钮</Button>
@@ -175,11 +207,12 @@
                                 </Poptip>
                             </div>
                             <div align="center">
-                                <Page :total="100"></Page>
+                                <Page :total="total" show-total @on-change="pageSwitch"></Page>
+                                <h1>{{this.$route.params.obj}}</h1>
                             </div>
                             
                         </TabPane>
-                        <TabPane label="添加" icon="plus" v-if="see">
+                        <TabPane label="添加" icon="plus" v-if="see" name="name2">
                             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="0" label-position="top">
                             <Row :gutter="16">
                                 <Col span="4" offset="1">
@@ -334,10 +367,13 @@
         },
         data () {
             return {
-                loading: true,
+                total: 0,
+                name: "name1",
+                loading: false,
                 see: true,
                 cai: "1-1",
                 formValidate: {
+                    user: 'wany',
                     borrower: '',
                     charge: '',
                     participants: '',
@@ -515,7 +551,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            console.log(params)
+                                            this.remove(params.row.id)
                                         }
                                     }
                                 }, '删除'),
@@ -597,12 +634,15 @@
             }
         },
         created: function(){
+            console.log(this.$route.params)
                 var _this = this;
                 this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
                 .then(function(respone){
                     // var _this = this;
-                    console.log(respone.data.data.content);
+                    // console.log(respone.data.data.content);
                     _this.data9 = respone.data.data.content
+                    _this.total = respone.data.data.totalSize
+                    _this.loading = false
                 })
                 .catch(function(error){
                     console.log(error)
@@ -622,37 +662,164 @@
             //     })
         },
         methods: {
-
-            collapsedSider () {
-                this.$refs.side1.toggleCollapse();
-            },
-            show (index) {
+            edit (index) {
                 this.$Modal.confirm({
-                    title: 'User Info',
-                    content: `Name：${this.data9[index].user}<br>Age：${this.data9[index].age}<br>Address：${this.data9[index].address}`,
+                    okTest: '提交',
+                    cancelText: '取消',
                     onOk: () => {
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
                         this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('Input',{
+
+                                    })
+
+                            ])
                     }
+
                 })
             },
-            remove (index) {
-                this.data9.splice(index, 1);
+            pageSwitch (index) {
+                var _this = this;
+                _this.loading = true
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index)
+                .then(function(respone){
+                    // var _this = this;
+                    // console.log(respone.data.data.content);
+                    _this.data9 = respone.data.data.content
+                    _this.total = respone.data.data.totalSize
+                    _this.loading = false
+                })
+                .catch(function(error){
+                    console.log(error)
+                })
+            },
+            collapsedSider () {
+                this.$refs.side1.toggleCollapse();
+            },
+            show (index) {
+                this.$Modal.confirm({
+                    okText: '通过',
+                    cancelText: '否决',
+                    onOk: () => {
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('h1', 'hello world'
+                                    ),
+                                    h('h3', '预计借款日期：'+this.data9[index].estimateTime),
+                                    h('h3', '借款人：'+this.data9[index].borrower),
+                                    h('h3', '负责人：'+this.data9[index].charge),
+                                    h('h3', '借款方式：'+this.data9[index].wayOfBorrowing),
+                                    h('h3', '参与人：'+this.data9[index].participants),
+                                    h('h3', '地区：'+this.data9[index].area),
+                                    h('h3', '项目组名称：'+this.data9[index].projectName),
+                                    h('h3', '一级科目：'+this.data9[index].classA),
+                                    h('h3', '二级科目：'+this.data9[index].classB),
+                                    h('h3', '三级科目：'+this.data9[index].classC),
+                                    h('h3', '总金额：'+this.data9[index].money+'元'),
+                                    h('h3', '借款事由：'+this.data9[index].reason),
+                                    h('h3', '商品链接：'+this.data9[index].link),
+                                    h('Input', {
+                                        props: {
+                                            value: this.value,
+                                            autofocus: true,
+                                            placeholder: '请填写审核意见'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.value = val;
+                                            }
+                                        }
+                                    }),
+                                
+                        ])
+                        
+                    }
+                    // title: 'User Info',
+                    // okText: '通过',
+                    // cancelText: '否决',
+                    // content: `填单人：${this.data9[index].user}<br>填单日期：${this.data9[index].fillTime}<br>
+                    // 借款金额：${this.data9[index].money} 元<br>预计借款日期：${this.data9[index].estimateTime}<br>
+                    // 地区：${this.data9[index].area}<br>项目组：${this.data9[index].project}<br>
+                    // 项目组名称：${this.data9[index].projectName}<br>借款人：${this.data9[index].borrower}<br>
+                    // 是否有准备金：${this.data9[index].readyMoney}<br>借款事由：${this.data9[index].reason}<br>
+                    // 一级科目：${this.data9[index].classA}<br>二级科目${this.data9[index].classB}<br>
+                    // 三级科目${this.data9[index].classC}<br>参与人：${this.data9[index].participants}<br>
+                    // 无发票备注：${this.data9[index].noInvoice}<br>是否补写：${this.data9[index].writeUp}<br>
+                    // 借款方式：${this.data9[index].wayOfBorrowing}<br>商品链接：${this.data9[index].link}<br>
+                    // 备注：${this.data9[index].remarks}<br>`,
+                    // onOk: () => {
+                    //     this.$Message.info('Clicked ok');
+                    // },
+                    // onCancel: () => {
+                    //     this.$Message.info('Clicked cancel');
+                    // }
+                })
+            },
+            remove (id) {
+                var _this = this;
+                _this.loading = true
+                // this.data9.splice(index, 1);
+                // console.log('http://192.168.0.94:8763/lend/v1/deleteOne/'+index)
+                this.$http.delete('http://192.168.0.94:8763/lend/v1/deleteOne/'+id)
+                    .then(function(respone){
+                        console.log(respone)
+                        
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    })
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                    .then(function(respone){
+                            // var _this = this;
+                        console.log(respone.data.data.content);
+                        _this.data9 = respone.data.data.content
+                        _this.total = respone.data.data.totalSize
+                        _this.loading = false
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    })
             },
             handleSubmit (name) {
+                var _this = this
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         this.$Message.success('Success!');
                         console.log(this.formValidate)
                         this.$http.post('http://192.168.0.94:8763/lend/v1/saveOne',this.formValidate)
                             .then(function(respone){
+                                _this.loading = true
+                                
                                 console.log(respone)
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
+                        _this.name = "name1"
+                        this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.date.date.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                     } else {
                         this.$Message.error('Fail!');
                     }
@@ -734,6 +901,19 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                    .then(function(respone){
+                            // var _this = this;
+                        console.log(respone.data.data.content);
+                        _this.data9 = respone.data.data.content
+                        _this.total = respone.data.data.totalSize
+                        _this.loading = false
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    })
+
+
                 }else if (name=="1-1") {
                     this.see = true
                     this.columns10 = [
@@ -809,6 +989,11 @@
                                         type: '',
                                         size: 'small'
                                     },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
                                 },'审核')
                             ]);
                         }
@@ -1158,6 +1343,7 @@
                         }
                     }
                 ]
+
                 }else if (name=="1-8") {
                     this.see = false
                     this.columns10 = [

@@ -1,48 +1,30 @@
 <template>
   <div>
-    <Button @click="confirm">Normal</Button>
-    <Button @click="custom">Custom button text</Button>
-    <Button @click="async">Asynchronous closing</Button>
-    <Icon type="power" size="50" color="white"></Icon>
+      <Row>
+        <Col span="8" offset="4">
+          <Timeline>
+              <TimelineItem color="green">
+                  <Icon type="trophy" slot="dot"></Icon>
+                  <span>发布里程碑版本</span>
+              </TimelineItem>
+              <TimelineItem>
+                <p slot="dot">12:22</p>
+                <div style="margin-left: 15px">
+                  发布1.0版本
+                </div>
+                <!-- <h1>hello world</h1> -->
+                
+              </TimelineItem>
+              <TimelineItem>发布2.0版本</TimelineItem>
+              <TimelineItem>发布3.0版本</TimelineItem>
+          </Timeline>
+        </Col>
+      </Row>
   </div>
     
 </template>
 <script>
     export default {
-        methods: {
-            confirm () {
-                this.$Modal.confirm({
-                    // title: 'Title',
-                    content: '<p>Content of dialog</p><p>Content of dialog</p>',
-                    onOk: () => {
-                        this.$Message.info('Clicked ok');
-                    },
-                    onCancel: () => {
-                        this.$Message.info('Clicked cancel');
-                    }
-                });
-            },
-            custom () {
-                this.$Modal.confirm({
-                    title: 'Title',
-                    content: '<p>Content of dialog</p><p>Content of dialog</p>',
-                    okText: 'OK',
-                    cancelText: 'Cancel'
-                });
-            },
-            async () {
-                this.$Modal.confirm({
-                    title: 'Title',
-                    content: '<p>The dialog box will be closed after 2 seconds</p>',
-                    loading: true,
-                    onOk: () => {
-                        setTimeout(() => {
-                            this.$Modal.remove();
-                            this.$Message.info('Asynchronously close the dialog box');
-                        }, 2000);
-                    }
-                });
-            }
-        }
+        
     }
 </script>
