@@ -170,7 +170,7 @@
                             <MenuItem name="1-3">待付款</MenuItem>
                             <MenuItem name="1-4">待确认</MenuItem>
                             <MenuItem name="1-5">待还款</MenuItem>
-                            <MenuItem name="1-6">还核对</MenuItem>
+                            <MenuItem name="1-6">待核对</MenuItem>
                             <MenuItem name="1-7">已完成</MenuItem>
                             <MenuItem name="1-8">有误记录</MenuItem>
                         </Submenu>
@@ -195,7 +195,7 @@
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px',padding: '20px'}">
                     <Tabs :value="name">
                         <TabPane label="列表" icon="navicon" name="name1">
-                            <Table :columns="columns10" :data="data9" :loading="loading"></Table>
+                            <Table :columns="columns10" :data="data9" :loading="loading" @on-select="selectRemove"></Table>
                             <div style="margin-top: 15px;margin-bottom: 15px">
                                 <Button style="margin-right: 5px">这是一个无所事事的按钮</Button>
                                 <Poptip
@@ -203,7 +203,7 @@
                                     title="您确认删除这些内容吗？"
                                     @on-ok="ok"
                                     @on-cancel="cancel">
-                                    <Button type="error">批量删除</Button>
+                                    <Button type="error" @click="">批量删除</Button>
                                 </Poptip>
                             </div>
                             <div align="center">
@@ -311,7 +311,7 @@
                                 </Col>
                                 <Col span="15">
                                     <vue-chart type="bar" :data="chartData"></vue-chart>
-                                    <vue-chart type="line" :data="chartData"></vue-chart>
+                                    <!-- <vue-chart type="line" :data="chartData"></vue-chart> -->
                                     <!-- <h1>{{formValidate.borrower}}</h1>
                                     <h1>{{formValidate.charge}}</h1>
                                     <h1>{{formValidate.participants}}</h1>
@@ -393,6 +393,10 @@
                     readyMoney: '',
                     link: '',
                     remarks: '',
+                },
+                auditings: {
+                    pass: '',
+                    opinion: '',
                 },
                 chartData: {
                     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -662,6 +666,14 @@
             //     })
         },
         methods: {
+            selectRemove(selection,row){
+
+                console.log(selection)
+                console.log(row)
+            },
+            batchRemove () {
+
+            },
             edit (index) {
                 this.$Modal.confirm({
                     okTest: '提交',
@@ -701,14 +713,113 @@
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
             },
+            show2 (index) {
+                this.$Modal.confirm({
+                    okText: '付款',
+                    cancelText: '否决',
+                    onOk: () => {                                         
+                        // this.auditings.pass = true
+                        // console.log(this.auditings)
+                        // this.data9[index].auditings.push(this.auditings)
+                        // console.log(this.data9[index])
+                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitPaymentEdit',this.data9[index])
+                        //     .then(function(respone){
+                        //         console.log(respone)
+
+                        //     })
+                        //     .catch(function(error){
+                        //         console.log(error)
+                        //     })
+                        
+
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+                        // this.auditings.pass = false
+                        // console.log(this.auditings)
+                        // this.data9[index].auditings.push(this.auditings)
+                        // console.log(this.data9[index])
+                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
+                        //     .then(function(respone){
+                        //         console.log(respone)
+                        //     })
+                        //     .catch(function(error){
+                        //         console.log(error)
+                        //     })
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('h1', '付款'
+                                    ),
+                                    h('h3', '预计借款日期：'+this.data9[index].estimateTime),
+                                    h('h3', '借款人：'+this.data9[index].borrower),
+                                    h('h3', '负责人：'+this.data9[index].charge),
+                                    h('h3', '借款方式：'+this.data9[index].wayOfBorrowing),
+                                    h('h3', '参与人：'+this.data9[index].participants),
+                                    h('h3', '地区：'+this.data9[index].area),
+                                    h('h3', '项目组名称：'+this.data9[index].projectName),
+                                    h('h3', '一级科目：'+this.data9[index].classA),
+                                    h('h3', '二级科目：'+this.data9[index].classB),
+                                    h('h3', '三级科目：'+this.data9[index].classC),
+                                    h('h3', '总金额：'+this.data9[index].money+'元'),
+                                    h('h3', '借款事由：'+this.data9[index].reason),
+                                    h('h3', '商品链接：'+this.data9[index].link),
+                                    h('Select', [
+                                            h('Option',{
+                                                props: {
+                                                value: 'hello',
+                                                // autofocus: true,
+                                                // placeholder: '请填写审核意见'
+                                                },
+                                            }),
+                                            h('Option',{
+                                                props: {
+                                                value: 'hello world',
+                                                // autofocus: true,
+                                                // placeholder: '请填写审核意见'
+                                                },
+                                            }),
+                                        ],
+                                    ),
+                                
+                        ])  
+                        
+                    }
+                })
+
+            },
             show (index) {
                 this.$Modal.confirm({
                     okText: '通过',
                     cancelText: '否决',
                     onOk: () => {
+                        this.auditings.pass = true
+                        console.log(this.auditings)
+                        this.data9[index].auditings.push(this.auditings)
+                        console.log(this.data9[index])
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
+                        this.auditings.pass = false
+                        console.log(this.auditings)
+                        this.data9[index].auditings.push(this.auditings)
+                        console.log(this.data9[index])
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
                         this.$Message.info('Clicked cancel');
                     },
                     render: (h) => {
@@ -730,7 +841,7 @@
                                     h('h3', '商品链接：'+this.data9[index].link),
                                     h('Input', {
                                         props: {
-                                            value: this.value,
+                                            value: this.auditings.opinion,
                                             autofocus: true,
                                             placeholder: '请填写审核意见'
                                         },
@@ -739,7 +850,7 @@
                                         },
                                         on: {
                                             input: (val) => {
-                                                this.value = val;
+                                                this.auditings.opinion = val;
                                             }
                                         }
                                     }),
@@ -747,25 +858,6 @@
                         ])
                         
                     }
-                    // title: 'User Info',
-                    // okText: '通过',
-                    // cancelText: '否决',
-                    // content: `填单人：${this.data9[index].user}<br>填单日期：${this.data9[index].fillTime}<br>
-                    // 借款金额：${this.data9[index].money} 元<br>预计借款日期：${this.data9[index].estimateTime}<br>
-                    // 地区：${this.data9[index].area}<br>项目组：${this.data9[index].project}<br>
-                    // 项目组名称：${this.data9[index].projectName}<br>借款人：${this.data9[index].borrower}<br>
-                    // 是否有准备金：${this.data9[index].readyMoney}<br>借款事由：${this.data9[index].reason}<br>
-                    // 一级科目：${this.data9[index].classA}<br>二级科目${this.data9[index].classB}<br>
-                    // 三级科目${this.data9[index].classC}<br>参与人：${this.data9[index].participants}<br>
-                    // 无发票备注：${this.data9[index].noInvoice}<br>是否补写：${this.data9[index].writeUp}<br>
-                    // 借款方式：${this.data9[index].wayOfBorrowing}<br>商品链接：${this.data9[index].link}<br>
-                    // 备注：${this.data9[index].remarks}<br>`,
-                    // onOk: () => {
-                    //     this.$Message.info('Clicked ok');
-                    // },
-                    // onCancel: () => {
-                    //     this.$Message.info('Clicked cancel');
-                    // }
                 })
             },
             remove (id) {
@@ -776,22 +868,22 @@
                 this.$http.delete('http://192.168.0.94:8763/lend/v1/deleteOne/'+id)
                     .then(function(respone){
                         console.log(respone)
-                        
+                        location.reload()
                     })
                     .catch(function(error){
                         console.log(error)
                     })
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
-                    .then(function(respone){
-                            // var _this = this;
-                        console.log(respone.data.data.content);
-                        _this.data9 = respone.data.data.content
-                        _this.total = respone.data.data.totalSize
-                        _this.loading = false
-                    })
-                    .catch(function(error){
-                        console.log(error)
-                    })
+                // this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                //     .then(function(respone){
+                //             // var _this = this;
+                //         console.log(respone.data.data.content);
+                //         _this.data9 = respone.data.data.content
+                //         _this.total = respone.data.data.totalSize
+                //         _this.loading = false
+                //     })
+                //     .catch(function(error){
+                //         console.log(error)
+                //     })
             },
             handleSubmit (name) {
                 var _this = this
@@ -802,8 +894,8 @@
                         this.$http.post('http://192.168.0.94:8763/lend/v1/saveOne',this.formValidate)
                             .then(function(respone){
                                 _this.loading = true
-                                
-                                console.log(respone)
+                                location.reload()
+                                // console.log(respone)
                             })
                             .catch(function (error) {
                                 console.log(error);
@@ -833,7 +925,8 @@
                 this.formValidate.estimateTime = date
             },
             menu (name) {
-                // var _this = this;
+                var _this = this;
+                _this.loading = true
                 // console.log(columns10.test)
                 if (name=="1-2") {
                     this.see = false
@@ -901,7 +994,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/1')
                     .then(function(respone){
                             // var _this = this;
                         console.log(respone.data.data.content);
@@ -915,6 +1008,7 @@
 
 
                 }else if (name=="1-1") {
+                    // _this.loading = true
                     this.see = true
                     this.columns10 = [
                     {
@@ -966,7 +1060,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.showl(params.index)
+                                            // this.showl(params.index)
                                         }
                                     }
                                 }, '编辑'),
@@ -999,6 +1093,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }else if (name=="1-3") {
                     this.see = false
                     this.columns10 = [
@@ -1051,7 +1156,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            // this.remove(params.index)
+                                            this.show2(params.index)
                                         }
                                     }
                                 }, '付款'),
@@ -1065,6 +1171,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }else if (name=="1-4") {
                     this.see = false
                     this.columns10 = [
@@ -1131,6 +1248,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }else if (name=="1-5") {
                     this.see = false
                     this.columns10 = [
@@ -1211,6 +1339,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }else if (name=="1-6") {
                     this.see = false
                     this.columns10 = [
@@ -1277,6 +1416,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }else if (name=="1-7") {
                     this.see = false
                     this.columns10 = [
@@ -1343,6 +1493,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
 
                 }else if (name=="1-8") {
                     this.see = false
@@ -1410,6 +1571,17 @@
                         }
                     }
                 ]
+                this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/1')
+                        .then(function(respone){
+                                // var _this = this;
+                            console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }
             }
         }
