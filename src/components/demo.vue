@@ -82,7 +82,7 @@
                                     <h2>12</h2>
                                 </Col>
                                 <Col span="8">
-                                    <div style="float:left;width: 1px;height: 25px; background: white;margin-left: 20px"></div> 
+                                    <div style="float:left;width: 1px;height: 25px; background: white;margin-left: 20px"></div>
                                 </Col>
                                 <Col span="8">
                                     <h2>234</h2>
@@ -98,7 +98,7 @@
                                         <p style="color: white">action</p>
                                     </Col>
                                     <Col span="8">
-                                        <div style="float:left;width: 1px;height: 25px; background: #495060;margin-left: 20px"></div> 
+                                        <div style="float:left;width: 1px;height: 25px; background: #495060;margin-left: 20px"></div>
                                     </Col>
                                     <Col span="8">
                                         <p style="color: white">king</p>
@@ -122,7 +122,7 @@
                                             <router-link to="/signIn"><Icon type="power" size="20" color="white"></Icon></router-link>
                                         <!-- </Tooltip> -->
                                     </div>
-                                    
+
                                 </Col>
                                 <Col span="6">
                                     <!-- <Badge dot> -->
@@ -134,8 +134,8 @@
                                             <a href=""><Icon type="social-youtube" size="20" color="white"></Icon></a>
                                         <!-- </Poptip> -->
                                     </div>
-                                    
-                                    
+
+
                                 </Col>
                                 <Col span="6">
                                     <Badge dot>
@@ -155,7 +155,7 @@
                             </Row>
                         </Col>
                     </Row>
-                    
+
                     <!-- <Button type="primary">info</Button> -->
 
                 </div>
@@ -195,29 +195,29 @@
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px',padding: '20px'}">
                     <Tabs :value="name">
                         <TabPane label="列表" icon="navicon" name="name1">
-                            <Table :columns="columns10" :data="data9" :loading="loading" @on-select="selectRemove"></Table>
+                            <Table :columns="columns10" :data="data9" :loading="loading" @on-select="selectRemove" ref="table"></Table>
                             <div style="margin-top: 15px;margin-bottom: 15px">
-                                <Button style="margin-right: 5px">这是一个无所事事的按钮</Button>
+                                <!-- <Button style="margin-right: 5px">这是一个无所事事的按钮</Button> --><Button type="primary" size="large" @click="exportData"><Icon type="ios-download-outline"></Icon> 导出当前页面数据 </Button>
                                 <Poptip
                                     confirm
                                     title="您确认删除这些内容吗？"
                                     @on-ok="ok"
                                     @on-cancel="cancel">
-                                    <Button type="error" @click="">批量删除</Button>
+                                    <Button size="large" type="error" @click="batchRemove">批量删除</Button>
                                 </Poptip>
                             </div>
                             <div align="center">
                                 <Page :total="total" show-total @on-change="pageSwitch"></Page>
                                 <h1>{{this.$route.params.obj}}</h1>
                             </div>
-                            
+
                         </TabPane>
                         <TabPane label="添加" icon="plus" v-if="see" name="name2">
                             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="0" label-position="top">
                             <Row :gutter="16">
                                 <Col span="4" offset="1">
                                     <div>
-                                        
+
                                             <FormItem label="借款人" prop="borrower">
                                                 <Input v-model="formValidate.borrower" placeholder="请输入借款人的姓名"></Input>
                                             </FormItem>
@@ -270,7 +270,7 @@
                                 </Col>
                                 <Col span="4">
                                     <div>
-                                        
+
                                             <FormItem label="参与人">
                                                 <Input v-model="formValidate.participants" placeholder="请输入参与人的姓名"></Input>
                                             </FormItem>
@@ -280,7 +280,7 @@
                                             <FormItem label="项目组" prop="project">
                                                 <Input v-model="formValidate.project" placeholder="所在项目组"></Input>
                                             </FormItem>
-                                            
+
                                             <FormItem label="项目名称" prop="projectName">
                                                 <Input v-model="formValidate.projectName" placeholder="这个项目有名字吗"></Input>
                                             </FormItem>
@@ -351,7 +351,7 @@
                             </Form>
                         </TabPane>
                     </Tabs>
-                    
+
                 </Content>
             </Layout>
         </Layout>
@@ -361,7 +361,7 @@
     import expandRow from './table-expand.vue';
     import VueChart from 'vue-chart-js';
     export default {
-        components: { 
+        components: {
             expandRow,
             VueChart
         },
@@ -372,6 +372,7 @@
                 loading: false,
                 see: true,
                 cai: "1-1",
+                lalalan: [],
                 formValidate: {
                     user: 'wany',
                     borrower: '',
@@ -549,7 +550,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.show(params.index)
+                                            this.show6(params.index,1)
                                         }
                                     }
                                 }, '编辑'),
@@ -674,14 +675,32 @@
             //     })
         },
         methods: {
-
+            exportData () {
+                this.$refs.table.exportCsv({
+                        filename: 'The original data'
+                    });
+            },
             selectRemove(selection,row){
-
-                console.log(selection)
-                console.log(row)
+                var hey = new Array()
+                this.lalalan = selection
+                for (var i = 0; i < selection.length; i++) {
+                  // console.log(selection[i]);
+                  hey[i] = selection[i].id
+                }
+                console.log(hey);
+                this.lalalan = hey;
+                // console.log(selection)
+                // console.log(row)
             },
             batchRemove () {
+                console.log(this.lalalan);
+                this.$http.delete('http://192.168.0.94:8763/lend/v1/deleteBatch',[{id:"hahah"}])
+                  .then(function(respone){
 
+                  })
+                  .catch(function(error) {
+
+                  })
             },
             edit (index) {
                 this.$Modal.confirm({
@@ -707,7 +726,7 @@
             pageSwitch (index) {
                 var _this = this;
                 _this.loading = true
-                if (cai=="1-1") {
+                if (this.cai == "1-1") {
                     this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index)
                         .then(function(respone){
                             // var _this = this;
@@ -719,7 +738,7 @@
                         .catch(function(error){
                             console.log(error)
                         })
-                } else if (cai=="1-2") {
+                } else if (this.cai == "1-2") {
                     this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/'+index)
                         .then(function(respone){
                             // var _this = this;
@@ -731,8 +750,80 @@
                         .catch(function(error){
                             console.log(error)
                         })
+                } else if (this.cai == "1-3") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (this.cai == "1-4") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (this.cai == "1-5") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (this.cai == "1-6") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (this.cai == "1-7") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
+                } else if (this.cai == "1-8") {
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/'+index)
+                        .then(function(respone){
+                            // var _this = this;
+                            // console.log(respone.data.data.content);
+                            _this.data9 = respone.data.data.content
+                            _this.total = respone.data.data.totalSize
+                            _this.loading = false
+                        })
+                        .catch(function(error){
+                            console.log(error)
+                        })
                 }
-                
+
             },
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
@@ -741,11 +832,11 @@
                 this.$Modal.confirm({
                             // title: "title",
                             // content: "content",
-                            onOk: () => {                                         
+                            onOk: () => {
                                 this.$http.put('http://192.168.0.94:8763/lend/v1/waitConfirmEdit',this.data9[index])
                                     .then(function(respone){
                                         location.reload()
-                                        
+
                                     })
                                     .catch(function(error){
                                         console.log(error)
@@ -758,10 +849,10 @@
                             render: (h) => {
                                 return h('div',[
                                     h('h1', 'hello word'),
-                                    
-                                
-                                ])  
-                        
+
+
+                                ])
+
                             }
                 })
                         // });
@@ -770,7 +861,7 @@
                 this.$Modal.confirm({
                     okText: '付款',
                     cancelText: '取消',
-                    onOk: () => {                                         
+                    onOk: () => {
                         this.$http.put('http://192.168.0.94:8763/lend/v1/waitPaymentEdit',this.data9[index])
                             .then(function(respone){
                                 location.reload()
@@ -787,7 +878,7 @@
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
-                        
+
                         this.$Message.info('Clicked cancel');
                     },
                     render: (h) => {
@@ -843,7 +934,7 @@
                                                 },
                                             }),
                                         ],
-                                        
+
                                     ),
                                     h('DatePicker',{
                                                 on: {
@@ -852,9 +943,9 @@
                                                     }
                                                 },
                                     })
-                                
-                        ])  
-                        
+
+                        ])
+
                     }
                 })
 
@@ -924,9 +1015,9 @@
                                             }
                                         }
                                     }),
-                                
+
                         ])
-                        
+
                     }
                 })
             },
@@ -950,17 +1041,7 @@
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
-                        // this.auditings.pass = false
-                        // console.log(this.auditings)
-                        // this.data9[index].auditings.push(this.auditings)
-                        // console.log(this.data9[index])
-                        // this.$http.put('http://192.168.0.94:8763/lend/v1/waitAuditedExamine',this.data9[index])
-                        //     .then(function(respone){
-                        //         console.log(respone)
-                        //     })
-                        //     .catch(function(error){
-                        //         console.log(error)
-                        //     })
+
                         this.$Message.info('Clicked cancel');
                     },
                     render: (h) => {
@@ -1070,22 +1151,22 @@
                                             }
                                         }
                                     }),
-                                
+
                         ])
-                        
+
                     }
                 })
             },
             show5 (index) {
                 this.$Modal.confirm({
-                    okText: '确认',
-                    cancelText: '取消',
+                    okText: '通过',
+                    cancelText: '否决',
                     onOk: () => {
                         this.auditings.pass = true
                         console.log(this.auditings)
                         this.data9[index].auditings.push(this.auditings)
                         console.log(this.data9[index])
-                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitRepayment',this.data9[index])
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitCheck',this.data9[index])
                             .then(function(respone){
                                 console.log(respone)
                                 location.reload()
@@ -1096,7 +1177,16 @@
                         this.$Message.info('Clicked ok');
                     },
                     onCancel: () => {
-                        
+                        this.auditings.pass = false
+                        this.data9[index].auditings.push(this.auditings)
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/waitCheck',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
                         this.$Message.info('Clicked cancel');
                     },
                     render: (h) => {
@@ -1124,7 +1214,7 @@
                                     h('h3', '归还账户：'+this.data9[index].auditings[0].account),
                                     h('Input', {
                                         props: {
-                                            value: this.data9[index].auditings[0].auditorModule,
+                                            value: this.auditings.auditorModule,
                                             autofocus: true,
                                             placeholder: '审核人模块'
                                         },
@@ -1133,13 +1223,13 @@
                                         },
                                         on: {
                                             input: (val) => {
-                                                this.data9[index].auditings[0].auditorModule = val;
+                                                this.auditings.auditorModule = val;
                                             }
                                         }
                                     }),
                                     h('Input', {
                                         props: {
-                                            value: this.data9[index].auditings[0].verification,
+                                            value: this.auditings.verification,
                                             autofocus: true,
                                             placeholder: '核对情况'
                                         },
@@ -1148,14 +1238,125 @@
                                         },
                                         on: {
                                             input: (val) => {
-                                                this.data9[index].auditings[0].verification = val;
+                                                this.auditings.verification = val;
                                             }
                                         }
                                     }),
-                                    
-                                
+
+
                         ])
-                        
+
+                    }
+                })
+            },
+            show6 (index,type) {
+                this.$Modal.confirm({
+                    okText: '提交',
+                    cancelText: '取消',
+                    onOk: () => {
+                      if (type == 1) {
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/update',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
+                      } else if (type == 2) {
+                        this.$http.put('http://192.168.0.94:8763/lend/v1/errorRecord',this.data9[index])
+                            .then(function(respone){
+                                console.log(respone)
+                                location.reload()
+                            })
+                            .catch(function(error){
+                                console.log(error)
+                            })
+                      }
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].user,
+                                            autofocus: true,
+                                            placeholder: '借款人'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].user = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].borrower,
+                                            autofocus: true,
+                                            placeholder: '负责人'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                              this.data9[index].borrower = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].charge,
+                                            autofocus: true,
+                                            placeholder: ''
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                              this.data9[index].charge = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].charge,
+                                            autofocus: true,
+                                            placeholder: ''
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                // this.auditings.verification = val;
+                                            }
+                                        }
+                                    }),
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].charge,
+                                            autofocus: true,
+                                            placeholder: ''
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                // this.auditings.verification = val;
+                                            }
+                                        }
+                                    }),
+                        ])
                     }
                 })
             },
@@ -1361,7 +1562,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            // this.showl(params.index)
+                                            this.show6(params.index,1)
                                         }
                                     }
                                 }, '编辑'),
@@ -1616,7 +1817,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            // this.remove(params.index)
                                         }
                                     }
                                 }, '寄件'),
@@ -1865,7 +2066,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.remove(params.index)
+                                            // this.remove(params.index)
+                                            this.show6(params.index,2)
                                         }
                                     }
                                 }, '编辑'),
