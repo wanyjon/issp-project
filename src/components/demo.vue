@@ -1360,6 +1360,40 @@
                     }
                 })
             },
+            show7 (index,type) {
+                this.$Modal.confirm({
+                    okText: '提交',
+                    cancelText: '取消',
+                    onOk: () => {
+
+                        this.$Message.info('Clicked ok');
+                    },
+                    onCancel: () => {
+
+                        this.$Message.info('Clicked cancel');
+                    },
+                    render: (h) => {
+                        return h('div',[
+                                    h('Input', {
+                                        props: {
+                                            value: this.data9[index].user,
+                                            autofocus: true,
+                                            placeholder: '借款人'
+                                        },
+                                        style: {
+                                            marginTop: '15px'
+                                        },
+                                        on: {
+                                            input: (val) => {
+                                                this.data9[index].user = val;
+                                            }
+                                        }
+                                    }),
+
+                        ])
+                    }
+                })
+            },
             remove (id) {
                 var _this = this;
                 _this.loading = true
@@ -2076,7 +2110,31 @@
                                         type: '',
                                         size: 'small'
                                     },
-                                },'审核详情')
+                                },'审核详情'),
+                                h('Poptip', [
+                                        h('Button', {
+                                            props: {
+                                                type: 'primary',
+                                                size: 'small'
+                                            },
+                                        }, 'test'),
+                                        h('div',[
+                                            h('table', [
+                                                h('thead',[
+                                                    h('tr',[
+                                                        h('th','版本号'),
+                                                        h('th','版本号'),
+                                                        h('th','版本号'),
+                                                    ])
+                                                ])
+                                            ])
+                                        ],{
+                                            props: {
+                                                slot: 'content'
+                                            }
+                                        })
+
+                                ])
                             ]);
                         }
                     }
