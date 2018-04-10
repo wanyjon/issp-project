@@ -2111,30 +2111,7 @@
                                         size: 'small'
                                     },
                                 },'审核详情'),
-                                h('Poptip', [
-                                        h('Button', {
-                                            props: {
-                                                type: 'primary',
-                                                size: 'small'
-                                            },
-                                        }, 'test'),
-                                        h('div',[
-                                            h('table', [
-                                                h('thead',[
-                                                    h('tr',[
-                                                        h('th','版本号'),
-                                                        h('th','版本号'),
-                                                        h('th','版本号'),
-                                                    ])
-                                                ])
-                                            ])
-                                        ],{
-                                            props: {
-                                                slot: 'content'
-                                            }
-                                        })
 
-                                ])
                             ]);
                         }
                     }
