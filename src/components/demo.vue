@@ -73,7 +73,7 @@
                 <div align="center" style="margin-top: 15px;margin-bottom: 30px">
                     <!-- <img src="@/assets/WechatIMG561.jpeg"> -->
                     <Avatar size="large" icon="person"/>
-                    <h2>wany</h2>
+                    <h2>{{formValidate.user}}</h2>
                     <p style="color: white">Action of the king</p>
                     <Row>
                         <Col span='16' offset="4">
@@ -208,7 +208,7 @@
                             </div>
                             <div align="center">
                                 <Page :total="total" show-total @on-change="pageSwitch"></Page>
-                                <h1>{{this.$route.params.obj}}</h1>
+                                <h1></h1>
                             </div>
 
                         </TabPane>
@@ -374,7 +374,7 @@
                 cai: "1-1",
                 lalalan: [],
                 formValidate: {
-                    user: 'wany',
+                    user: '',
                     borrower: '',
                     charge: '',
                     participants: '',
@@ -585,50 +585,50 @@
                     }
                 ],
                 data9: [
-                    {
-                        user: 'John Brown',
-                        fillTime: 18,
-                        money: 'New York No. 1 Lake Park',
-                        estimateTime: 'Data engineer',
-                        interest: 'badminton',
-                        birthday: '1991-05-14',
-                        book: 'Steve Jobs',
-                        movie: 'The Prestige',
-                        music: 'I Cry'
-                    },
-                    {
-                        user: 'Jim Green',
-                        fillTime: 25,
-                        money: 'London No. 1 Lake Park',
-                        estimateTime: 'Data Scientist',
-                        interest: 'volleyball',
-                        birthday: '1989-03-18',
-                        book: 'My Struggle',
-                        movie: 'Roman Holiday',
-                        music: 'My Heart Will Go On'
-                    },
-                    {
-                        user: 'Joe Black',
-                        fillTime: 30,
-                        money: 'Sydney No. 1 Lake Park',
-                        estimateTime: 'Data Product Manager',
-                        interest: 'tennis',
-                        birthday: '1992-01-31',
-                        book: 'Win',
-                        movie: 'Jobs',
-                        music: 'Don’t Cry'
-                    },
-                    {
-                        user: 'Jon Snow',
-                        fillTime: 26,
-                        money: 'Ottawa No. 2 Lake Park',
-                        estimateTime: 'Data Analyst',
-                        interest: 'snooker',
-                        birthday: '1988-7-25',
-                        book: 'A Dream in Red Mansions',
-                        movie: 'A Chinese Ghost Story',
-                        music: 'actor'
-                    }
+                    // {
+                    //     user: 'John Brown',
+                    //     fillTime: 18,
+                    //     money: 'New York No. 1 Lake Park',
+                    //     estimateTime: 'Data engineer',
+                    //     interest: 'badminton',
+                    //     birthday: '1991-05-14',
+                    //     book: 'Steve Jobs',
+                    //     movie: 'The Prestige',
+                    //     music: 'I Cry'
+                    // },
+                    // {
+                    //     user: 'Jim Green',
+                    //     fillTime: 25,
+                    //     money: 'London No. 1 Lake Park',
+                    //     estimateTime: 'Data Scientist',
+                    //     interest: 'volleyball',
+                    //     birthday: '1989-03-18',
+                    //     book: 'My Struggle',
+                    //     movie: 'Roman Holiday',
+                    //     music: 'My Heart Will Go On'
+                    // },
+                    // {
+                    //     user: 'Joe Black',
+                    //     fillTime: 30,
+                    //     money: 'Sydney No. 1 Lake Park',
+                    //     estimateTime: 'Data Product Manager',
+                    //     interest: 'tennis',
+                    //     birthday: '1992-01-31',
+                    //     book: 'Win',
+                    //     movie: 'Jobs',
+                    //     music: 'Don’t Cry'
+                    // },
+                    // {
+                    //     user: 'Jon Snow',
+                    //     fillTime: 26,
+                    //     money: 'Ottawa No. 2 Lake Park',
+                    //     estimateTime: 'Data Analyst',
+                    //     interest: 'snooker',
+                    //     birthday: '1988-7-25',
+                    //     book: 'A Dream in Red Mansions',
+                    //     movie: 'A Chinese Ghost Story',
+                    //     music: 'actor'
+                    // }
                 ]
             }
         },
@@ -648,8 +648,12 @@
         },
         created: function(){
             console.log(this.$route.params)
+
                 var _this = this;
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                _this.formValidate.user = sessionStorage.getItem("username")
+                // console.log(_this.$session.getAll())
+                // console.log('http://192.168.0.94:8763/lend/v1/waitAudit/1/'+this.$route.params.users.name+'/admin')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                 .then(function(respone){
                     // var _this = this;
                     // console.log(respone.data.data.content);
@@ -685,7 +689,8 @@
                 this.lalalan = selection
                 for (var i = 0; i < selection.length; i++) {
                   // console.log(selection[i]);
-                  hey[i] = selection[i].id
+                  hey[i] = {id:selection[i].id}
+
                 }
                 console.log(hey);
                 this.lalalan = hey;
@@ -694,7 +699,7 @@
             },
             batchRemove () {
                 console.log(this.lalalan);
-                this.$http.delete('http://192.168.0.94:8763/lend/v1/deleteBatch',[{id:"hahah"}])
+                this.$http.post('http://192.168.0.94:8763/lend/v1/deleteBatch',this.lalalan)
                   .then(function(respone){
 
                   })
@@ -727,7 +732,7 @@
                 var _this = this;
                 _this.loading = true
                 if (this.cai == "1-1") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -739,7 +744,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-2") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -751,7 +756,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-3") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -763,7 +768,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-4") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -775,7 +780,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-5") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -787,7 +792,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-6") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -799,7 +804,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-7") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -811,7 +816,7 @@
                             console.log(error)
                         })
                 } else if (this.cai == "1-8") {
-                    this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/'+index)
+                    this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/'+index+'/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                             // var _this = this;
                             // console.log(respone.data.data.content);
@@ -1529,7 +1534,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAnalysis/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                     .then(function(respone){
                             // var _this = this;
                         console.log(respone.data.data.content);
@@ -1538,7 +1543,7 @@
                         _this.loading = false
                     })
                     .catch(function(error){
-                        console.log(error)
+                        // console.log(error)
                     })
 
 
@@ -1629,7 +1634,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitAudit/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -1708,7 +1713,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitPayment/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -1787,7 +1792,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitConfirm/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -1879,7 +1884,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitRepayment/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -1957,7 +1962,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/waitCheck/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -2035,7 +2040,7 @@
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/Completed/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);
@@ -2110,13 +2115,41 @@
                                         type: '',
                                         size: 'small'
                                     },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
                                 },'审核详情'),
+                                // h('Poptip',{
+                                //   props: {
+                                //     placement: 'left',
+                                //     width: '400'
+                                //   }
+                                // },
+                                // [
+                                //     h('Button',{
+                                //         props: {
+                                //           type: 'ghost',
+                                //           size: 'small'
+                                //         },
+                                //
+                                //     },'test'),
+                                //     h('div',{
+                                //         props: {
+                                //           // class: 'api',
+                                //           slot: 'content'
+                                //         },
+                                //       },
+                                //       [
+                                //         h('h1','hello world')
+                                //       ]
+                                //     )
+                                // ])
 
                             ]);
                         }
                     }
                 ]
-                this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/1')
+                this.$http.get('http://192.168.0.94:8763/lend/v1/errorRecord/1/'+this.formValidate.user+'/'+sessionStorage.getItem("role"))
                         .then(function(respone){
                                 // var _this = this;
                             console.log(respone.data.data.content);

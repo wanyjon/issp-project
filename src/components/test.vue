@@ -1,41 +1,41 @@
 <template>
-    <div class="" style="margin-top: 50px">
-      <Poptip placement="right" width="400">
-          <Button type="ghost">click 激活</Button>
-          <div slot="content">
-              <table>
-                  <thead>
-                      <tr>
-                          <th>版本号</th>
-                          <th>更新时间</th>
-                          <th>说明</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td>0.9.5</td>
-                          <td>2016-10-26</td>
-                          <td>新增信息提示组件 <code>Tooltip</code>和<code>Poptip</code></td>
-                      </tr>
-                      <tr>
-                          <td>0.9.4</td>
-                          <td>2016-10-25</td>
-                          <td>新增对话框组件 <code>Modal</code></td>
-                      </tr>
-                      <tr>
-                          <td>0.9.2</td>
-                          <td>2016-09-28</td>
-                          <td>新增选择器组件 <code>Select</code></td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-      </Poptip>
-    </div>
+  <div class="">
+    <Steps :current="1">
+        <Step title="已完成" content="这里是该步骤的描述信息"></Step>
+        <Step title="进行中" content="这里是该步骤的描述信息"></Step>
+        <Step title="待进行" content="这里是该步骤的描述信息"></Step>
+        <Step title="待进行" content="这里是该步骤的描述信息"></Step>
+    </Steps>
+    <Button type="primary" @click="test">Primary</Button>
+  </div>
+
 
 </template>
 <script>
     export default {
+      data () {
+        return {
+          username: '',
+          password: '',
+        }
+      },
+      methods: {
+        test(){
+          var _this = this;
+          console.log(Vue.cookie.get('test'))
+        //   this.$http.get('http://localhost:9710/save')
+        //     .then(function(respone){
+              
+        //     })
+        //     .catch(function(error){
 
+        //     })
+          
+        // }
+      }
     }
+
+}
+    
+
 </script>

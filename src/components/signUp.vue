@@ -1,130 +1,75 @@
 <style scoped>
-    body {
-    background-color: #495060
-}
+
 </style>
 <template>
-    <div style="background-color: #495060">
-        <Row>
-            <Col span="12" offset="6">
-                <Card style="margin-top: 5%; margin-bottom: 5%">
-                    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-                        <FormItem label="Name" prop="name">
-                            <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
-                        </FormItem>
-                        <FormItem label="E-mail" prop="mail">
-                            <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
-                        </FormItem>
-                        <FormItem label="City" prop="city">
-                            <Select v-model="formValidate.city" placeholder="Select your city">
-                                <Option value="beijing">New York</Option>
-                                <Option value="shanghai">London</Option>
-                                <Option value="shenzhen">Sydney</Option>
-                            </Select>
-                        </FormItem>
-                        <FormItem label="Date">
-                            <Row>
-                                <Col span="11">
-                                    <FormItem prop="date">
-                                        <DatePicker type="date" placeholder="Select date" v-model="formValidate.date"></DatePicker>
-                                    </FormItem>
-                                </Col>
-                                <Col span="2" style="text-align: center">-</Col>
-                                <Col span="11">
-                                    <FormItem prop="time">
-                                        <TimePicker type="time" placeholder="Select time" v-model="formValidate.time"></TimePicker>
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                        </FormItem>
-                        <FormItem label="Gender" prop="gender">
-                            <RadioGroup v-model="formValidate.gender">
-                                <Radio label="male">Male</Radio>
-                                <Radio label="female">Female</Radio>
-                            </RadioGroup>
-                        </FormItem>
-                        <FormItem label="Hobby" prop="interest">
-                            <CheckboxGroup v-model="formValidate.interest">
-                                <Checkbox label="Eat"></Checkbox>
-                                <Checkbox label="Sleep"></Checkbox>
-                                <Checkbox label="Run"></Checkbox>
-                                <Checkbox label="Movie"></Checkbox>
-                            </CheckboxGroup>
-                        </FormItem>
-                        <FormItem label="Desc" prop="desc">
-                            <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-                        </FormItem>
-                        <FormItem>
-                            <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
-                            <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Already have an account  &nbsp;&nbsp;<router-link to="/signIn">sign in</router-link>
-                        </FormItem>
-                    </Form>
-                    <img src="@/assets/IMG_0021.png" width="100%" height="100%">
-                </Card>
-            </Col>
-        </Row>
-        
-    </div>
+  <div class="">
+    <Row>
+      <Col span="" offset="3">
+        <div class="" style="margin-top: 15px;margin-bottom: 15px">
+          <Button type="primary">个人注册</Button>
+          <Button type="ghost">企业注册</Button>
+        </div>
+      </Col>
+    </Row>
+    <Row>
+      <Col span="14" offset="7">
+        <div class="" style="margin-top: 15px;margin-bottom: 15px">
+          <Steps :current="num">
+            <Step title="手机号" icon="android-phone-portrait"></Step>
+            <Step title="验证身份" icon="person-add"></Step>
+            <Step title="设置用户" icon="android-lock"></Step>
+            <!-- <Icon type="android-lock"></Icon> -->
+            <!-- <Icon type="android-phone-portrait"></Icon> -->
+            <Step title="待进行" icon="person-add" v-if="false"></Step>
+          </Steps>
+        </div>
+      </Col>
+    </Row>
+    <Row>
+      <Col span="4" offset="10">
+        <div class="" align="center" style="margin-top: 15px;margin-bottom: 15px">
+          <Form :model="formTop" label-position="top">
+              <FormItem label="输入注册的手机号">
+                  <Input v-model="formTop.input1" placeholder="请输入手机号码"></Input>
+              </FormItem>
+              <!-- <FormItem label="Title name">
+                  <Input v-model="formTop.input2"></Input>
+              </FormItem>
+              <FormItem label="Aligned title">
+                  <Input v-model="formTop.input3"></Input>
+              </FormItem> -->
+          </Form>
+          <Button type="primary" @click="cout">{{this.text}}</Button>
+        </div>
+      </Col>
+    </Row>
+  </div>
+
+
 </template>
 <script>
     export default {
-        data () {
-            return {
-                formValidate: {
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
-                    date: '',
-                    time: '',
-                    desc: ''
-                },
-                ruleValidate: {
-                    name: [
-                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-                    ],
-                    mail: [
-                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
-                    ],
-                    gender: [
-                        { required: true, message: 'Please select gender', trigger: 'change' }
-                    ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-                        { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-                    ],
-                    date: [
-                        { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
-                    ],
-                    time: [
-                        { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
-                    ],
-                    desc: [
-                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-                    ]
+      data(){
+        return {
+          text: "下一步",
+          num: 0,
+          formTop: {
+                    input1: '',
+                    input2: '',
+                    input3: ''
                 }
-            }
-        },
-        methods: {
-            handleSubmit (name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$Message.success('Success!');
-                    } else {
-                        this.$Message.error('Fail!');
-                    }
-                })
-            },
-            handleReset (name) {
-                this.$refs[name].resetFields();
-            }
         }
+      },
+      methods: {
+        cout(){
+          if (this.num < 2) {
+            this.num += 1;
+          }
+          if (this.num == 2) {
+            this.text = "确认"
+          }
+        }
+      }
+
     }
 </script>
